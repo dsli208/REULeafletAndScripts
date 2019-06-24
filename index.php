@@ -149,6 +149,14 @@ var circles = [];
 var mapFeatures = [];
 var vehicleLocationArray;
 
+var sunday = [];
+var monday = [];
+var tuesday = [];
+var wednesday = [];
+var thursday = [];
+var friday = [];
+var saturday = [];
+
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -320,6 +328,20 @@ function processData(allText) {
     mapFeatures.push(feature);
   }
 
+  console.log(mapFeatures);
+
+  var overlayMaps = {
+    "Sunday": sunday,
+    "Monday": monday,
+    "Tuesday": tuesday,
+    "Wednesday": wednesday,
+    "Thursday": thursday,
+    "Friday": friday,
+    "Saturday": saturday
+};
+
+//L.control.layers(null, overlayMaps).addTo(mymap);
+
   // Info control
   var info = L.control({position: 'bottomleft'});
 
@@ -406,7 +428,7 @@ info.addTo(mymap);
     console.log("Map features");
     console.log(mapFeatures);
 
-  	geojson = L.geoJson(mapData, {
+  	geojson = L.geoJson(mapFeatures, {
   		style: style,
   		onEachFeature: onEachFeature
   	}).addTo(mymap);
@@ -439,8 +461,8 @@ info.addTo(mymap);
 $(document).ready(function() {
     $.ajax({
         type: "GET",
-        //url: "samplebubble.csv",
-        url: "filtered_0604ecb7003b6954_20190508.csv",
+        url: "samplecircle.csv",
+        //url: "filtered_0604ecb7003b6954_20190508.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}
