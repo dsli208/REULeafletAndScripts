@@ -260,7 +260,7 @@ function processData(allText) {
 	var baseLayer = L.tileLayer(
 	  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 		attribution: '...',
-		maxZoom: 18
+		maxZoom: 30
 	  }
 	);
 
@@ -286,8 +286,8 @@ function processData(allText) {
 	var heatmapLayer = new HeatmapOverlay(cfg);
 
 	var mymap = L.map('mapid', {
-		center: [34.022398, -84.119096],
-		zoom: 11.35,
+		center: [33.9708, -84.223425],
+		zoom: 15,
 		layers: [baseLayer, heatmapLayer]
 		});
 
