@@ -149,6 +149,14 @@ var circles = [];
 var mapFeatures = [];
 var vehicleLocationArray;
 
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 function processData(allText) {
     // For the regular heatmap data
     var lines=[];
@@ -199,7 +207,9 @@ function processData(allText) {
            }
        }
      }
-     vehicleLocationArray.push(temp_obj);
+     if (!isEmpty(temp_obj)) {
+       vehicleLocationArray.push(temp_obj);
+     }
    }
     /*
               // Sort by day
@@ -282,7 +292,7 @@ function processData(allText) {
 
   //L.control.layers(null, overlayMaps).addTo(mymap);
 
-  for (var i = 0; i < vehicleLocationArray.length && vehicleLocationArray[i].lat != null; i++) {
+  for (var i = 0; i < vehicleLocationArray.length; i++) {
     var obj = vehicleLocationArray[i];
     console.log(obj);
     //Change the size and color of circular markers here
@@ -303,15 +313,12 @@ function processData(allText) {
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [temp_obj.lat, temp_obj.lng]
+        "coordinates": [obj.lat, obj.lng]
       }
     }
 
     mapFeatures.push(feature);
   }
-
-  console.log("Map features");
-  console.log(mapFeatures);
 
   // Info control
   var info = L.control({position: 'bottomleft'});
@@ -395,7 +402,9 @@ info.addTo(mymap);
   	}
 
     var mapData = {"type":"FeatureCollection","features": mapFeatures};
-    console.log(mapData);
+    //console.log(mapData);
+    console.log("Map features");
+    console.log(mapFeatures);
 
   	geojson = L.geoJson(mapData, {
   		style: style,
@@ -430,8 +439,8 @@ info.addTo(mymap);
 $(document).ready(function() {
     $.ajax({
         type: "GET",
-        url: "samplebubble.csv",
-        //url: "filtered_0604ecb7003b6954_20190508.csv",
+        //url: "samplebubble.csv",
+        url: "filtered_0604ecb7003b6954_20190508.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}
