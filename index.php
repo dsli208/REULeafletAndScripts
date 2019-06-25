@@ -287,7 +287,7 @@ function processData(allText) {
 
 	var mymap = L.map('mapid', {
 		center: [33.9708, -84.223425],
-		zoom: 15,
+		zoom: 11.35,
 		layers: [baseLayer, heatmapLayer]
 		});
 
@@ -297,8 +297,6 @@ function processData(allText) {
 			id: 'mapbox.streets',
 			accessToken: 'pk.eyJ1IjoiYWxhdTMzIiwiYSI6ImNqd2phYTZ4ODAzbnk0YW9lYWdzOTlpZGEifQ.4hhK6mhqi2brriiB7bEyuw'
 	}).addTo(mymap);
-
-  //L.control.layers(null, overlayMaps).addTo(mymap);
 
   for (var i = 0; i < vehicleLocationArray.length; i++) {
     var obj = vehicleLocationArray[i];
@@ -342,21 +340,55 @@ function processData(allText) {
 					//this.closePopup();
 					info.update();
 			  });
+        obj.on('click', function(e) {
+          zoomToFeature(e);
+        })
 	});
 
   console.log(mapFeatures);
 
-  var overlayMaps = {
-    "Sunday": sunday,
-    "Monday": monday,
-    "Tuesday": tuesday,
-    "Wednesday": wednesday,
-    "Thursday": thursday,
-    "Friday": friday,
-    "Saturday": saturday
-};
+  if (obj.day == 0) {
+    sunday.push(circle);
+  }
+  else if (obj.day == 1) {
+    monday.push(circle);
+  }
+  else if (obj.hour == 2) {
+    tuesday.push(circle);
+  }
+  else if (obj.hour == 3) {
+    wednesday.push(circle);
+  }
+  else if (obj.hour == 4) {
+    thursday.push(circle);
+  }
+  else if (obj.hour == 5) {
+    friday.push(circle);
+  }
+  else if (obj.hour == 6) {
+    saturday.push(circle);
+  }
 
-//L.control.layers(null, overlayMaps).addTo(mymap);
+  // Convert arrays to layergroups
+  var sundayLayer = L.layerGroup(sunday);
+  var mondayLayer = L.layerGroup(monday);
+  var tuesdayLayer = L.layerGroup(tuesday);
+  var wednesdayLayer = L.layerGroup(wednesday);
+  var thursdayLayer = L.layerGroup(thursday);
+  var fridayLayer = L.layerGroup(friday);
+  var saturdayLayer = L.layerGroup(saturday);
+
+  var overlayMaps = {
+    "Sunday": sundayLayer,
+    "Monday": mondayLayer,
+    "Tuesday": tuesdayLayer,
+    "Wednesday": wednesdayLayer,
+    "Thursday": thursdayLayer,
+    "Friday": fridayLayer,
+    "Saturday": saturdayLayer
+  };
+
+  L.control.layers(null, overlayMaps).addTo(mymap);
 
   // Info control
   var info = L.control({position: 'bottomleft'});
@@ -369,7 +401,7 @@ function processData(allText) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    this._div.innerHTML = '<h4>Fire truck speeds in Gwinnett County</h4>' +  (props ?
+    this._div.innerHTML = '<h4>Fire Truck Speeds in Gwinnett County</h4>' +  (props ?
         '' + props.lat + ', ' + props.lng + '<br /><b>'+ props.spd + ' mph </b>'
         : 'Hover over a circle <br />');
 };
@@ -427,7 +459,7 @@ info.addTo(mymap);
 
   	function zoomToFeature(e) {
       console.log("Zoom to Feature");
-  		map.fitBounds(e.target.getBounds());
+  		mymap.fitBounds(e.target.getBounds());
   	}
 
   	function onEachFeature(feature, layer) {
