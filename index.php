@@ -311,6 +311,7 @@ function processData(allText) {
       radius: obj.rad
     });
     circle.addTo(mymap);
+    circles.push(circle);
 
     // Add geoJSON features
     var feature = {
@@ -327,6 +328,21 @@ function processData(allText) {
 
     mapFeatures.push(feature);
   }
+
+  console.log(circles);
+  circles.forEach(function(obj) {
+        var index = circles.indexOf(obj);
+        console.log(index);
+				//obj[0].bindPopup('ID: '+obj[1].site_id);
+				obj.on('mouseover', function (e) {
+					//this.openPopup();
+					info.update(vehicleLocationArray[index]);
+				});
+				obj.on('mouseout', function (e) {
+					//this.closePopup();
+					info.update();
+			  });
+	});
 
   console.log(mapFeatures);
 
@@ -354,7 +370,7 @@ function processData(allText) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
     this._div.innerHTML = '<h4>Fire truck speeds in Gwinnett County</h4>' +  (props ?
-        '<b>' + props.lat + '</b><br />' + props.lng + ' / mi<sup>2</sup>'
+        '' + props.lat + ', ' + props.lng + '<br /><b>'+ props.spd + ' mph </b>'
         : 'Hover over a circle <br />');
 };
 
@@ -461,8 +477,8 @@ info.addTo(mymap);
 $(document).ready(function() {
     $.ajax({
         type: "GET",
-        url: "samplecircle.csv",
-        //url: "filtered_0604ecb7003b6954_20190508.csv",
+        //url: "samplecircle.csv",
+        url: "filtered_0604ecb7003b6954_20190508.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}
