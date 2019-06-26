@@ -210,7 +210,9 @@ function processData(allText) {
             }
            if (headers[j] == 'time'){
                var timestamp = new Date(data[j]);
-                temp_obj.hour = timestamp.getHours();
+               console.log(timestamp);
+               console.log(timestamp.getTimezoneOffset());
+               temp_obj.hour = timestamp.getHours();
                temp_obj.day = timestamp.getDay();
            }
        }
@@ -325,6 +327,36 @@ function processData(allText) {
     }
 
     mapFeatures.push(feature);
+
+
+      if (obj.day == 0) {
+        console.log("Sunday");
+        sunday.push(circle);
+      }
+      else if (obj.day == 1) {
+        console.log("Monday");
+        monday.push(circle);
+      }
+      else if (obj.day == 2) {
+        console.log("Tuesday");
+        tuesday.push(circle);
+      }
+      else if (obj.day == 3) {
+        console.log("Wednesday");
+        wednesday.push(circle);
+      }
+      else if (obj.day == 4) {
+        console.log("Thursday");
+        thursday.push(circle);
+      }
+      else if (obj.day == 5) {
+        console.log("Friday");
+        friday.push(circle);
+      }
+      else if (obj.day == 6) {
+        console.log("Saturday");
+        saturday.push(circle);
+      }
   }
 
   console.log(circles);
@@ -345,29 +377,7 @@ function processData(allText) {
         })
 	});
 
-  console.log(mapFeatures);
-
-  if (obj.day == 0) {
-    sunday.push(circle);
-  }
-  else if (obj.day == 1) {
-    monday.push(circle);
-  }
-  else if (obj.hour == 2) {
-    tuesday.push(circle);
-  }
-  else if (obj.hour == 3) {
-    wednesday.push(circle);
-  }
-  else if (obj.hour == 4) {
-    thursday.push(circle);
-  }
-  else if (obj.hour == 5) {
-    friday.push(circle);
-  }
-  else if (obj.hour == 6) {
-    saturday.push(circle);
-  }
+  console.log(mapData);
 
   // Convert arrays to layergroups
   var sundayLayer = L.layerGroup(sunday);
@@ -377,6 +387,9 @@ function processData(allText) {
   var thursdayLayer = L.layerGroup(thursday);
   var fridayLayer = L.layerGroup(friday);
   var saturdayLayer = L.layerGroup(saturday);
+
+  console.log("Sunday layer");
+  console.log(sunday); console.log(sundayLayer);
 
   var overlayMaps = {
     "Sunday": sundayLayer,
