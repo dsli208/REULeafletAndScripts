@@ -16,8 +16,6 @@
                    <div class="block-row block-row-odd block-count-2">
                     <div class="row-content clearfix">
 
-	<h3> Heatmap </h3>
-	<div id="mapid"></div>
 
 <head>
 
@@ -35,6 +33,11 @@ crossorigin=""/>
 <script src="./heatmap-min.js"></script>
 <script src="./heatmap.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<!-- include cartodb css  -->
+<link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+<!-- include cartodb.js library -->
+<script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
 <style>
 
@@ -135,6 +138,60 @@ crossorigin=""/>
     opacity: 0.7;
 }
 
+/* Dropdown Button */
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+/*New, INSIDE Leaflet map drop down*/
+html, body,
+      #selector_menu{
+      	position: bottomright;
+      	top: 20px;
+      	left: 20px;
+      	z-index: 9000;
+      }
+
 #mapid { width: 1000px; height: 500px; }
 
 </style>
@@ -143,7 +200,88 @@ crossorigin=""/>
 
 <div id="loader"></div>
 
+<h3> Heatmap </h3>
+<!--
+<div class="dropdown">
+  <button onclick="showDropDown()" class="dropbtn">Select Day</button><br />
+  <div id="myDropdown" class="dropdown-content">
+    <a href="/">Reset</a>
+    <a href="?day=0">Sunday</a>
+    <a href="?day=1">Monday</a>
+    <a href="?day=2">Tuesday</a>
+    <a href="?day=3">Wednesday</a>
+    <a href="?day=4">Thursday</a>
+    <a href="?day=5">Friday</a>
+    <a href="?day=6">Saturday</a>
+  </div>
+</div>
+
+-->
+<br />
+<div id="mapid"></div>
+
+<div id='selector_menu'>
+		<select id='selector'>
+			<option value='reset' href='/'>Reset</option>
+			<option value='sunday' href='?day=0'>Sunday</option>
+			<option value = 'monday' href='?day=1'>Monday</option>
+      <option value='tuesday' href='?day=2'>Tuesday</option>
+			<option value = 'wednesday' href='?day=3'>Wednesday</option>
+      <option value='thursday' href="?day=4">Thursday</option>
+			<option value = 'friday' href="?day=5">Friday</option>
+      <option value='saturday' href="?day=6">Saturday</option>
+		</select>
+	</div>
+
+
 <script>
+
+var glob_day;
+console.log(location.search.substring(1));
+if (location.search.substring(1) == 'day=0') {
+  glob_day = 0;
+}
+else if (location.search.substring(1) == 'day=1') {
+  glob_day = 1;
+}
+else if (location.search.substring(1) == 'day=2') {
+  glob_day = 2;
+}
+else if (location.search.substring(1) == 'day=3') {
+  glob_day = 3;
+}
+else if (location.search.substring(1) == 'day=4') {
+  glob_day = 4;
+}
+else if (location.search.substring(1) == 'day=5') {
+  glob_day = 5;
+}
+else if (location.search.substring(1) == 'day=6') {
+  glob_day = 6;
+}
+else {
+  glob_day = -1;
+}
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function showDropDown() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
 
 var circles = [];
 var mapFeatures = [];
@@ -224,38 +362,10 @@ function processData(allText) {
            }
        }
      }
-     if (!isEmpty(temp_obj)) {
+     if (!isEmpty(temp_obj) && (temp_obj.day == glob_day || glob_day < 0)) {
        vehicleLocationArray.push(temp_obj);
      }
    }
-    /*
-              // Sort by day
-              temp_day = day;
-            }
-
-            var temp_obj = {lat : temp_obj.lat,
-            				  lng : temp_obj.lng,
-            				  count : temp_count};
-
-            var temp_feature = {
-              "type": "Feature",
-              "properties": {
-                "name": "Data Point",
-                "show_on_map": true
-              },
-              "geometry": {
-                "type": "Point",
-                "coordinates": [temp_obj.lat, temp_obj.lng]
-              }
-            }
-            	//tarr.push(temp_obj);
-            lines.push(temp_obj);
-            circles.push(temp_circ);
-            mapFeatures.push(temp_feature);
-
-            console.log(lines[i-1]);
-        }
-    }*/
 
     console.log(circles);
     var smthg = [{lat: 34.022398, lng:-84.119096, count: 10}, {lat: 33.969825, lng:-84.223736, count: 5}]
@@ -434,13 +544,13 @@ function processData(allText) {
   console.log(sunday); console.log(sundayLayer);
 
   var overlayMaps = {
-    "Sunday": sundayLayer,
+  /*  "Sunday": sundayLayer,
     "Monday": mondayLayer,
     "Tuesday": tuesdayLayer,
     "Wednesday": wednesdayLayer,
     "Thursday": thursdayLayer,
     "Friday": fridayLayer,
-    "Saturday": saturdayLayer,
+    "Saturday": saturdayLayer,*/
     "Dawn": dawnLayer,
     "Morning": morningLayer,
     "Midday": middayLayer,
@@ -566,6 +676,36 @@ info.addTo(mymap);
   legend.addTo(mymap);
 
 };
+
+$('#selector').change(function() {
+		console.log($(this).val());
+    var day = $(this).val();
+
+    if (day == 'sunday') {
+      window.location.replace("?day=0");
+    }
+    else if (day == 'monday') {
+      window.location.replace("?day=1");
+    }
+    else if (day == 'tuesday') {
+      window.location.replace("?day=2");
+    }
+    else if (day == 'wednesday') {
+      window.location.replace("?day=3");
+    }
+    else if (day == 'thursday') {
+      window.location.replace("?day=4");
+    }
+    else if (day == 'friday') {
+      window.location.replace("?day=5");
+    }
+    else if (day == 'saturday') {
+      window.location.replace("?day=6");
+    }
+    else {
+      window.location.replace("/");
+    }
+});
 
 $(document).ready(function() {
     $.ajax({
