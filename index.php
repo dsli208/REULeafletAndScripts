@@ -157,6 +157,13 @@ var thursday = [];
 var friday = [];
 var saturday = [];
 
+var morning = [];
+var midday = [];
+var afternoon = [];
+var evening = [];
+var night = [];
+var dawn = [];
+
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -357,7 +364,34 @@ function processData(allText) {
         console.log("Saturday");
         saturday.push(circle);
       }
+
+
+        if (obj.hour >= 3 && obj.hour < 7) {
+          console.log("Dawn");
+          dawn.push(circle);
+        }
+        else if (obj.hour >= 7 && obj.hour < 11) {
+          console.log("Morning");
+          morning.push(circle);
+        }
+        else if (obj.hour >= 11 && obj.hour < 15) {
+          console.log("Midday");
+          midday.push(circle);
+        }
+        else if (obj.hour >= 15 && obj.hour < 19) {
+          console.log("Afternoon");
+          afternoon.push(circle);
+        }
+        else if (obj.hour >= 19 && obj.hour < 23) {
+          console.log("Evening");
+          evening.push(circle);
+        }
+        else if (obj.hour >= 23 || obj.hour <3) {
+          console.log("Night");
+          night.push(circle);
+        }
   }
+
 
   console.log(circles);
   circles.forEach(function(obj) {
@@ -388,6 +422,14 @@ function processData(allText) {
   var fridayLayer = L.layerGroup(friday);
   var saturdayLayer = L.layerGroup(saturday);
 
+  // Time of day layers
+  var dawnLayer = L.layerGroup(dawn);
+  var morningLayer = L.layerGroup(morning);
+  var middayLayer = L.layerGroup(midday);
+  var afternoonLayer = L.layerGroup(afternoon);
+  var eveningLayer = L.layerGroup(evening);
+  var nightLayer = L.layerGroup(night);
+
   console.log("Sunday layer");
   console.log(sunday); console.log(sundayLayer);
 
@@ -398,7 +440,13 @@ function processData(allText) {
     "Wednesday": wednesdayLayer,
     "Thursday": thursdayLayer,
     "Friday": fridayLayer,
-    "Saturday": saturdayLayer
+    "Saturday": saturdayLayer,
+    "Dawn": dawnLayer,
+    "Morning": morningLayer,
+    "Midday": middayLayer,
+    "Afternoon": afternoonLayer,
+    "Evening": eveningLayer,
+    "Night": nightLayer
   };
 
   L.control.layers(null, overlayMaps).addTo(mymap);
