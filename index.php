@@ -579,7 +579,7 @@ function processData(allText) {
 info.update = function (props) {
     this._div.innerHTML = '<h4>Fire Truck Speeds in Gwinnett County</h4>' +  (props ?
         '' + props.lat + ', ' + props.lng + '<br /><b>'+ props.spd + ' mph </b>'
-        : 'Hover over a circle <br />');
+        : 'Hover over an intersection <br />');
 };
 
 info.addTo(mymap);

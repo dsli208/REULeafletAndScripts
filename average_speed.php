@@ -351,7 +351,7 @@ function processData(allText) {
                else if(temp_obj.spd <= 45) {
                  temp_obj.rad = 60;
                  //temp_obj.color = "#FD8D3C";
-                 temp_obj.color = "#28C90C";
+                 temp_obj.color = "#1A8508";
                }
                else if(temp_obj.spd > 45) {
                  temp_obj.rad = 50;
@@ -581,7 +581,7 @@ function processData(allText) {
 info.update = function (props) {
     this._div.innerHTML = '<h4>Fire Truck Speeds in Gwinnett County</h4>' +  (props ?
         '' + props.lat + ', ' + props.lng + '<br /><b>'+ props.spd + ' mph </b>'
-        : 'Hover over a circle <br />');
+        : 'Hover over an intersection <br />');
 };
 
 info.addTo(mymap);
@@ -589,7 +589,7 @@ info.addTo(mymap);
   // add interaction
   function getColor(speed) {
       return speed > 45  ? '#1507E0' :
-             speed > 35  ? '#28C90C'  :
+             speed > 35  ? '#1A8508'  :
              speed > 25  ?  '#99D923' :
              speed > 15   ? '#FFFB00' :
              speed > 5   ? '#FFAA00' :
