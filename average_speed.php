@@ -200,7 +200,7 @@ html, body,
 
 <div id="loader"></div>
 
-<h3> Delay Map </h3>
+<h3> Speed Map </h3>
 <!--
 <div class="dropdown">
   <button onclick="showDropDown()" class="dropbtn">Select Day</button><br />
@@ -323,36 +323,39 @@ function processData(allText) {
       var data = allTextLines[i].split(',');
       if (data.length == headers.length) {
         for (var j=0; j<headers.length; j++) {
-           if (headers[j] == 'lat')
+           if (headers[j] == 'CenterLatitude')
                temp_obj.lat = parseFloat(data[j]);
-           if (headers[j] == 'lon')
+           if (headers[j] == 'CenterLongitude')
                temp_obj.lng = parseFloat(data[j]);
-           if (headers[j] == 'delay') {
-               temp_obj.delay = parseFloat(data[j]);
-               if(temp_obj.delay<=5 || temp_obj.delay == null) {
+           if (headers[j] == 'Average Speeds(mph)') {
+               temp_obj.spd = parseFloat(data[j]);
+               if(temp_obj.spd<=5) {
                  temp_obj.rad = 100;
                  temp_obj.color = "#800026";
                }
-               else if(temp_obj.delay <=15) {
+               else if(temp_obj.spd <=15) {
                  temp_obj.rad = 90;
                  temp_obj.color = "#BD0026";
                }
-               else if(temp_obj.delay<=25) {
+               else if(temp_obj.spd<=25) {
                  temp_obj.rad = 80;
-                 temp_obj.color = "#E31A1C";
+                 //temp_obj.color = "#E31A1C";
+                 temp_obj.color = "#FFAA00";
                }
-               else if(temp_obj.delay <= 35) {
+               else if(temp_obj.spd <= 35) {
                  temp_obj.rad = 70;
-                 temp_obj.color = "#FC4E2A";
+                 //temp_obj.color = "#FC4E2A";
+                 temp_obj.color = "#FFFB00";
                }
-               else if(temp_obj.delay <= 45) {
+               else if(temp_obj.spd <= 45) {
                  temp_obj.rad = 60;
-                 temp_obj.color = "#FD8D3C";
+                 //temp_obj.color = "#FD8D3C";
+                 temp_obj.color = "#99D923";
                }
-               else if(temp_obj.delay > 45) {
+               else if(temp_obj.spd > 45) {
                  temp_obj.rad = 50;
-                 temp_obj.color = "#FEB24C";
-                 //temp_obj.color = "#28C90C";
+                 //temp_obj.color = "#FEB24C";
+                 temp_obj.color = "#28C90C";
                }
             }
            if (headers[j] == 'time'){
@@ -546,13 +549,13 @@ function processData(allText) {
   console.log(sunday); console.log(sundayLayer);
 
   var overlayMaps = {
-  /*  "Sunday": sundayLayer,
+    "Sunday": sundayLayer,
     "Monday": mondayLayer,
     "Tuesday": tuesdayLayer,
     "Wednesday": wednesdayLayer,
     "Thursday": thursdayLayer,
     "Friday": fridayLayer,
-    "Saturday": saturdayLayer,*/
+    "Saturday": saturdayLayer,
     "Dawn": dawnLayer,
     "Morning": morningLayer,
     "Midday": middayLayer,
@@ -582,13 +585,13 @@ info.update = function (props) {
 info.addTo(mymap);
 
   // add interaction
-  function getColor(d) {
-      return d > 45  ? '#FEB24C' :
-             d > 35  ? '#FD8D3C' :
-             d > 25  ? '#FC4E2A' :
-             d > 15   ? '#E31A1C' :
-             d > 5   ? '#BD0026' :
-             d > 0   ? '#800026' :
+  function getColor(speed) {
+      return speed > 45  ? '#28C90C' :
+             speed > 35  ? '#99D923' :
+             speed > 25  ? '#FFFB00' :
+             speed > 15   ? '#FFAA00' :
+             speed > 5   ? '#BD0026' :
+             speed > 0   ? '#800026' :
                         '#FFEDA0';
   }
 
@@ -713,7 +716,7 @@ $(document).ready(function() {
     $.ajax({
         type: "GET",
         //url: "samplecircle.csv",
-        url: "filtered_0604ecb7003b6954_20190508.csv",
+        url: "IntersectionAverages.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}

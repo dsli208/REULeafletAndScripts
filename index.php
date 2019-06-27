@@ -200,7 +200,7 @@ html, body,
 
 <div id="loader"></div>
 
-<h3> Speed map </h3>
+<h3> Speed Map </h3>
 <!--
 <div class="dropdown">
   <button onclick="showDropDown()" class="dropbtn">Select Day</button><br />
@@ -219,7 +219,7 @@ html, body,
 -->
 <br />
 <div id="mapid"></div>
-
+<!--
 <div id='selector_menu'>
 		<select id='selector'>
 			<option value='none' href='/'>Select Day</option>
@@ -233,7 +233,7 @@ html, body,
       <option value='reset' href='/'>Reset</option>
 		</select>
 	</div>
-
+-->
 
 <script>
 
@@ -339,19 +339,23 @@ function processData(allText) {
                }
                else if(temp_obj.spd<=25) {
                  temp_obj.rad = 80;
-                 temp_obj.color = "#E31A1C";
+                 //temp_obj.color = "#E31A1C";
+                 temp_obj.color = "#FFAA00";
                }
                else if(temp_obj.spd <= 35) {
                  temp_obj.rad = 70;
-                 temp_obj.color = "#FC4E2A";
+                 //temp_obj.color = "#FC4E2A";
+                 temp_obj.color = "#FFFB00";
                }
                else if(temp_obj.spd <= 45) {
                  temp_obj.rad = 60;
-                 temp_obj.color = "#FD8D3C";
+                 //temp_obj.color = "#FD8D3C";
+                 temp_obj.color = "#99D923";
                }
                else if(temp_obj.spd > 45) {
                  temp_obj.rad = 50;
-                 temp_obj.color = "#FEB24C";
+                 //temp_obj.color = "#FEB24C";
+                 temp_obj.color = "#28C90C";
                }
             }
            if (headers[j] == 'time'){
@@ -545,13 +549,13 @@ function processData(allText) {
   console.log(sunday); console.log(sundayLayer);
 
   var overlayMaps = {
-  /*  "Sunday": sundayLayer,
+    "Sunday": sundayLayer,
     "Monday": mondayLayer,
     "Tuesday": tuesdayLayer,
     "Wednesday": wednesdayLayer,
     "Thursday": thursdayLayer,
     "Friday": fridayLayer,
-    "Saturday": saturdayLayer,*/
+    "Saturday": saturdayLayer,
     "Dawn": dawnLayer,
     "Morning": morningLayer,
     "Midday": middayLayer,
@@ -582,10 +586,10 @@ info.addTo(mymap);
 
   // add interaction
   function getColor(speed) {
-      return speed > 45  ? '#FEB24C' :
-             speed > 35  ? '#FD8D3C' :
-             speed > 25  ? '#FC4E2A' :
-             speed > 15   ? '#E31A1C' :
+      return speed > 45  ? '#28C90C' :
+             speed > 35  ? '#99D923' :
+             speed > 25  ? '#FFFB00' :
+             speed > 15   ? '#FFAA00' :
              speed > 5   ? '#BD0026' :
              speed > 0   ? '#800026' :
                         '#FFEDA0';
