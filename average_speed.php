@@ -335,27 +335,28 @@ function processData(allText) {
                }
                else if(temp_obj.spd <=15) {
                  temp_obj.rad = 90;
-                 temp_obj.color = "#BD0026";
+                 //temp_obj.color = "#BD0026";
+                 temp_obj.color = "#FFAA00";
                }
                else if(temp_obj.spd<=25) {
                  temp_obj.rad = 80;
                  //temp_obj.color = "#E31A1C";
-                 temp_obj.color = "#FFAA00";
+                 temp_obj.color = "#FFFB00";
                }
                else if(temp_obj.spd <= 35) {
                  temp_obj.rad = 70;
                  //temp_obj.color = "#FC4E2A";
-                 temp_obj.color = "#FFFB00";
+                 temp_obj.color = "#99D923";
                }
                else if(temp_obj.spd <= 45) {
                  temp_obj.rad = 60;
                  //temp_obj.color = "#FD8D3C";
-                 temp_obj.color = "#99D923";
+                 temp_obj.color = "#28C90C";
                }
                else if(temp_obj.spd > 45) {
                  temp_obj.rad = 50;
                  //temp_obj.color = "#FEB24C";
-                 temp_obj.color = "#28C90C";
+                 temp_obj.color = "#1507E0";
                }
             }
            if (headers[j] == 'time'){
@@ -410,8 +411,9 @@ function processData(allText) {
 	var heatmapLayer = new HeatmapOverlay(cfg);
 
 	var mymap = L.map('mapid', {
-		center: [33.9708, -84.223425],
-		zoom: 11.35,
+		center: [33.965759, -84.096407],
+		//zoom: 11.35,
+    zoom: 12,
 		layers: [baseLayer, heatmapLayer]
 		});
 
@@ -429,7 +431,7 @@ function processData(allText) {
     circle = L.circle([obj.lat, obj.lng], {
       color: 'none',
       fillColor: obj.color,
-      fillOpacity: 0.5,
+      fillOpacity: 0.75,
       radius: obj.rad
     });
     circle.addTo(mymap);
@@ -586,11 +588,11 @@ info.addTo(mymap);
 
   // add interaction
   function getColor(speed) {
-      return speed > 45  ? '#28C90C' :
-             speed > 35  ? '#99D923' :
-             speed > 25  ? '#FFFB00' :
-             speed > 15   ? '#FFAA00' :
-             speed > 5   ? '#BD0026' :
+      return speed > 45  ? '#1507E0' :
+             speed > 35  ? '#28C90C'  :
+             speed > 25  ?  '#99D923' :
+             speed > 15   ? '#FFFB00' :
+             speed > 5   ? '#FFAA00' :
              speed > 0   ? '#800026' :
                         '#FFEDA0';
   }
@@ -716,7 +718,7 @@ $(document).ready(function() {
     $.ajax({
         type: "GET",
         //url: "samplecircle.csv",
-        url: "IntersectionAverages.csv",
+        url: "IntersectionAverages1.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}
