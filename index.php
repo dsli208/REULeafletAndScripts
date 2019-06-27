@@ -200,7 +200,7 @@ html, body,
 
 <div id="loader"></div>
 
-<h3> Heatmap </h3>
+<h3> Speed map </h3>
 <!--
 <div class="dropdown">
   <button onclick="showDropDown()" class="dropbtn">Select Day</button><br />
@@ -222,7 +222,7 @@ html, body,
 
 <div id='selector_menu'>
 		<select id='selector'>
-			<option value='reset' href='/'>Reset</option>
+			<option value='none' href='/'>Select Day</option>
 			<option value='sunday' href='?day=0'>Sunday</option>
 			<option value = 'monday' href='?day=1'>Monday</option>
       <option value='tuesday' href='?day=2'>Tuesday</option>
@@ -230,6 +230,7 @@ html, body,
       <option value='thursday' href="?day=4">Thursday</option>
 			<option value = 'friday' href="?day=5">Friday</option>
       <option value='saturday' href="?day=6">Saturday</option>
+      <option value='reset' href='/'>Reset</option>
 		</select>
 	</div>
 
