@@ -334,27 +334,27 @@ function processData(allText) {
                  temp_obj.color = "#800026";
                }
                else if(temp_obj.spd <=15) {
-                 temp_obj.rad = 90;
+                 temp_obj.rad = 100;
                  //temp_obj.color = "#BD0026";
                  temp_obj.color = "#FFAA00";
                }
                else if(temp_obj.spd<=25) {
-                 temp_obj.rad = 80;
+                 temp_obj.rad = 100;
                  //temp_obj.color = "#E31A1C";
                  temp_obj.color = "#FFFB00";
                }
                else if(temp_obj.spd <= 35) {
-                 temp_obj.rad = 70;
+                 temp_obj.rad = 100;
                  //temp_obj.color = "#FC4E2A";
                  temp_obj.color = "#99D923";
                }
                else if(temp_obj.spd <= 45) {
-                 temp_obj.rad = 60;
+                 temp_obj.rad = 100;
                  //temp_obj.color = "#FD8D3C";
                  temp_obj.color = "#1A8508";
                }
                else if(temp_obj.spd > 45) {
-                 temp_obj.rad = 50;
+                 temp_obj.rad = 100;
                  //temp_obj.color = "#FEB24C";
                  temp_obj.color = "#1507E0";
                }
@@ -718,7 +718,7 @@ $(document).ready(function() {
     $.ajax({
         type: "GET",
         //url: "samplecircle.csv",
-        url: "IntersectionAverages1.csv",
+        url: "IntersectionAverages2.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}

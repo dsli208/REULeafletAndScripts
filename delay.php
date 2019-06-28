@@ -323,35 +323,35 @@ function processData(allText) {
       var data = allTextLines[i].split(',');
       if (data.length == headers.length) {
         for (var j=0; j<headers.length; j++) {
-           if (headers[j] == 'lat')
+           if (headers[j] == 'CenterLatitude')
                temp_obj.lat = parseFloat(data[j]);
-           if (headers[j] == 'lon')
+           if (headers[j] == 'CenterLongitude')
                temp_obj.lng = parseFloat(data[j]);
-           if (headers[j] == 'delay') {
+           if (headers[j] == 'Average Delays(sec)') {
                temp_obj.delay = parseFloat(data[j]);
                if(temp_obj.delay<=5 || temp_obj.delay == null) {
                  temp_obj.rad = 100;
                  temp_obj.color = "#800026";
                }
                else if(temp_obj.delay <=15) {
-                 temp_obj.rad = 90;
-                 temp_obj.color = "#BD0026";
+                 temp_obj.rad = 100;
+                 temp_obj.color = "#FFAA00";
                }
                else if(temp_obj.delay<=25) {
-                 temp_obj.rad = 80;
-                 temp_obj.color = "#E31A1C";
+                 temp_obj.rad = 100;
+                 temp_obj.color = "#FFFB00";
                }
                else if(temp_obj.delay <= 35) {
-                 temp_obj.rad = 70;
-                 temp_obj.color = "#FC4E2A";
+                 temp_obj.rad = 100;
+                 temp_obj.color = "#99D923";
                }
                else if(temp_obj.delay <= 45) {
-                 temp_obj.rad = 60;
-                 temp_obj.color = "#FD8D3C";
+                 temp_obj.rad = 100;
+                 temp_obj.color = "#1A8508";
                }
                else if(temp_obj.delay > 45) {
-                 temp_obj.rad = 50;
-                 temp_obj.color = "#FEB24C";
+                 temp_obj.rad = 100;
+                 temp_obj.color = "#1507E0";
                  //temp_obj.color = "#28C90C";
                }
             }
@@ -426,7 +426,7 @@ function processData(allText) {
     circle = L.circle([obj.lat, obj.lng], {
       color: 'none',
       fillColor: obj.color,
-      fillOpacity: 0.5,
+      fillOpacity: 0.8,
       radius: obj.rad
     });
     circle.addTo(mymap);
@@ -574,8 +574,8 @@ function processData(allText) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    this._div.innerHTML = '<h4>Fire Truck Speeds in Gwinnett County</h4>' +  (props ?
-        '' + props.lat + ', ' + props.lng + '<br /><b>'+ props.spd + ' mph </b>'
+    this._div.innerHTML = '<h4>Fire Truck Delays in Gwinnett County</h4>' +  (props ?
+        '' + props.lat + ', ' + props.lng + '<br /><b>'+ props.spd + ' sec </b>'
         : 'Hover over an intersection <br />');
 };
 
@@ -583,13 +583,13 @@ info.addTo(mymap);
 
   // add interaction
   function getColor(d) {
-      return d > 45  ? '#FEB24C' :
-             d > 35  ? '#FD8D3C' :
-             d > 25  ? '#FC4E2A' :
-             d > 15   ? '#E31A1C' :
-             d > 5   ? '#BD0026' :
-             d > 0   ? '#800026' :
-                        '#FFEDA0';
+    return d > 50  ? '#1507E0' :
+           d > 40  ? '#1A8508'  :
+           d > 30  ?  '#99D923' :
+           d > 20   ? '#FFFB00' :
+           d > 10   ? '#FFAA00' :
+           d > 0   ? '#800026' :
+                      '#FFEDA0';
   }
 
   function style(feature) {
@@ -661,11 +661,11 @@ info.addTo(mymap);
   legend.onAdd = function (mymap) {
 
       var div = L.DomUtil.create('div', 'info legend'),
-          grades = [0, 5, 15, 25, 35, 45],
+          grades = [0, 10, 20, 30, 40, 50],
           labels = ['Categories'];
 
       // loop through our density intervals and generate a label with a colored square for each interval
-      div.innerHTML = '<h4>Speed (in mph)</h4>';
+      div.innerHTML = '<h4>Delay (seconds)</h4>';
       for (var i = 0; i < grades.length; i++) {
           div.innerHTML +=
               '<i style="background:' + getColor(grades[i] + 1) + '"></i>' +
@@ -713,7 +713,7 @@ $(document).ready(function() {
     $.ajax({
         type: "GET",
         //url: "samplecircle.csv",
-        url: "filtered_0604ecb7003b6954_20190508.csv",
+        url: "IntersectionAverages2.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}
