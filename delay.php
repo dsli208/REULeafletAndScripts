@@ -329,29 +329,32 @@ function processData(allText) {
                temp_obj.lng = parseFloat(data[j]);
            if (headers[j] == 'Average Delays(sec)') {
                temp_obj.delay = parseFloat(data[j]);
-               if(temp_obj.delay<=5 || temp_obj.delay == null) {
+               if(temp_obj.delay <= 10 || temp_obj.delay == null) {
                  temp_obj.rad = 100;
-                 temp_obj.color = "#800026";
+                 temp_obj.color = "#1507E0";
+
                }
-               else if(temp_obj.delay <=15) {
-                 temp_obj.rad = 100;
-                 temp_obj.color = "#FFAA00";
-               }
-               else if(temp_obj.delay<=25) {
-                 temp_obj.rad = 100;
-                 temp_obj.color = "#FFFB00";
-               }
-               else if(temp_obj.delay <= 35) {
-                 temp_obj.rad = 100;
-                 temp_obj.color = "#99D923";
-               }
-               else if(temp_obj.delay <= 45) {
+               else if(temp_obj.delay <= 20) {
                  temp_obj.rad = 100;
                  temp_obj.color = "#1A8508";
                }
-               else if(temp_obj.delay > 45) {
+               else if(temp_obj.delay<= 30) {
                  temp_obj.rad = 100;
-                 temp_obj.color = "#1507E0";
+                 temp_obj.color = "#99D923";
+               }
+               else if(temp_obj.delay <= 40) {
+                 temp_obj.rad = 100;
+                 temp_obj.color = "#FFFB00";
+
+               }
+               else if(temp_obj.delay <= 50) {
+                 temp_obj.rad = 100;
+                 temp_obj.color = "#FFAA00";
+
+               }
+               else if(temp_obj.delay > 50) {
+                 temp_obj.rad = 100;
+                 temp_obj.color = "#800026";
                  //temp_obj.color = "#28C90C";
                }
             }
@@ -407,8 +410,8 @@ function processData(allText) {
 	var heatmapLayer = new HeatmapOverlay(cfg);
 
 	var mymap = L.map('mapid', {
-		center: [33.9708, -84.223425],
-		zoom: 11.35,
+		center: [33.965759, -84.096407],
+		zoom: 12,
 		layers: [baseLayer, heatmapLayer]
 		});
 
@@ -583,12 +586,12 @@ info.addTo(mymap);
 
   // add interaction
   function getColor(d) {
-    return d > 50  ? '#1507E0' :
-           d > 40  ? '#1A8508'  :
-           d > 30  ?  '#99D923' :
-           d > 20   ? '#FFFB00' :
-           d > 10   ? '#FFAA00' :
-           d > 0   ? '#800026' :
+    return d > 50  ? '#800026' :
+           d > 40  ?  '#FFAA00' :
+           d > 30  ?  '#FFFB00' :
+           d > 20   ? '#99D923' :
+           d > 10   ? '#1A8508' :
+           d > 0   ?  '#1507E0' :
                       '#FFEDA0';
   }
 
