@@ -330,30 +330,30 @@ function processData(allText) {
            if (headers[j] == 'Average Delays(sec)') {
                temp_obj.delay = parseFloat(data[j]);
                if(temp_obj.delay <= 10 || temp_obj.delay == null) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  temp_obj.color = "#1507E0";
 
                }
                else if(temp_obj.delay <= 20) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  temp_obj.color = "#1A8508";
                }
                else if(temp_obj.delay<= 30) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  temp_obj.color = "#99D923";
                }
                else if(temp_obj.delay <= 40) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  temp_obj.color = "#FFFB00";
 
                }
                else if(temp_obj.delay <= 50) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  temp_obj.color = "#FFAA00";
 
                }
                else if(temp_obj.delay > 50) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  temp_obj.color = "#800026";
                  //temp_obj.color = "#28C90C";
                }

@@ -330,31 +330,31 @@ function processData(allText) {
            if (headers[j] == 'Average Speeds(mph)') {
                temp_obj.spd = parseFloat(data[j]);
                if(temp_obj.spd<=5) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  temp_obj.color = "#800026";
                }
                else if(temp_obj.spd <=10) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  //temp_obj.color = "#BD0026";
                  temp_obj.color = "#FFAA00";
                }
                else if(temp_obj.spd<=15) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  //temp_obj.color = "#E31A1C";
                  temp_obj.color = "#FFFB00";
                }
                else if(temp_obj.spd <= 20) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  //temp_obj.color = "#FC4E2A";
                  temp_obj.color = "#99D923";
                }
                else if(temp_obj.spd <= 25) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  //temp_obj.color = "#FD8D3C";
                  temp_obj.color = "#1A8508";
                }
                else if(temp_obj.spd > 25) {
-                 temp_obj.rad = 200;
+                 temp_obj.rad = 150;
                  //temp_obj.color = "#FEB24C";
                  temp_obj.color = "#1507E0";
                }
