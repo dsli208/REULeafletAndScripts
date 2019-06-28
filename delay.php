@@ -575,7 +575,7 @@ function processData(allText) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
     this._div.innerHTML = '<h4>Fire Truck Delays in Gwinnett County</h4>' +  (props ?
-        '' + props.lat + ', ' + props.lng + '<br /><b>'+ props.spd + ' sec </b>'
+        '' + props.lat + ', ' + props.lng + '<br /><b>'+ props.delay + ' sec </b>'
         : 'Hover over an intersection <br />');
 };
 
