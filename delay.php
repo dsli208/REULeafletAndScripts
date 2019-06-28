@@ -529,33 +529,33 @@ function processData(allText) {
   console.log(mapData);
 
   // Convert arrays to layergroups
-  var sundayLayer = L.layerGroup(sunday);
-  var mondayLayer = L.layerGroup(monday);
-  var tuesdayLayer = L.layerGroup(tuesday);
-  var wednesdayLayer = L.layerGroup(wednesday);
-  var thursdayLayer = L.layerGroup(thursday);
-  var fridayLayer = L.layerGroup(friday);
-  var saturdayLayer = L.layerGroup(saturday);
+  var sundayLayer = L.layerGroup(sunday).addTo(mymap);
+  var mondayLayer = L.layerGroup(monday).addTo(mymap);
+  var tuesdayLayer = L.layerGroup(tuesday).addTo(mymap);
+  var wednesdayLayer = L.layerGroup(wednesday).addTo(mymap);
+  var thursdayLayer = L.layerGroup(thursday).addTo(mymap);
+  var fridayLayer = L.layerGroup(friday).addTo(mymap);
+  var saturdayLayer = L.layerGroup(saturday).addTo(mymap);
 
   // Time of day layers
-  var dawnLayer = L.layerGroup(dawn);
-  var morningLayer = L.layerGroup(morning);
-  var middayLayer = L.layerGroup(midday);
-  var afternoonLayer = L.layerGroup(afternoon);
-  var eveningLayer = L.layerGroup(evening);
-  var nightLayer = L.layerGroup(night);
+  var dawnLayer = L.layerGroup(dawn).addTo(mymap);
+  var morningLayer = L.layerGroup(morning).addTo(mymap);
+  var middayLayer = L.layerGroup(midday).addTo(mymap);
+  var afternoonLayer = L.layerGroup(afternoon).addTo(mymap);
+  var eveningLayer = L.layerGroup(evening).addTo(mymap);
+  var nightLayer = L.layerGroup(night).addTo(mymap);
 
   console.log("Sunday layer");
   console.log(sunday); console.log(sundayLayer);
 
   var overlayMaps = {
-  /*  "Sunday": sundayLayer,
+    "Sunday": sundayLayer,
     "Monday": mondayLayer,
     "Tuesday": tuesdayLayer,
     "Wednesday": wednesdayLayer,
     "Thursday": thursdayLayer,
     "Friday": fridayLayer,
-    "Saturday": saturdayLayer,*/
+    "Saturday": saturdayLayer,
     "Dawn": dawnLayer,
     "Morning": morningLayer,
     "Midday": middayLayer,

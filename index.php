@@ -192,7 +192,7 @@ html, body,
       	z-index: 9000;
       }
 
-#mapid { width: 1000px; height: 500px; }
+#mapid { width: 1200px; height: 800px; }
 
 </style>
 
@@ -323,39 +323,40 @@ function processData(allText) {
       var data = allTextLines[i].split(',');
       if (data.length == headers.length) {
         for (var j=0; j<headers.length; j++) {
-           if (headers[j] == 'lat')
+           if (headers[j] == 'CenterLatitude')
                temp_obj.lat = parseFloat(data[j]);
-           if (headers[j] == 'lon')
+           if (headers[j] == 'CenterLongitude')
                temp_obj.lng = parseFloat(data[j]);
-           if (headers[j] == 'speed') {
+           if (headers[j] == 'Average Speeds(mph)') {
                temp_obj.spd = parseFloat(data[j]);
                if(temp_obj.spd<=5) {
-                 temp_obj.rad = 100;
+                 temp_obj.rad = 150;
                  temp_obj.color = "#800026";
                }
-               else if(temp_obj.spd <=15) {
-                 temp_obj.rad = 90;
-                 temp_obj.color = "#BD0026";
-               }
-               else if(temp_obj.spd<=25) {
-                 temp_obj.rad = 80;
-                 //temp_obj.color = "#E31A1C";
+               else if(temp_obj.spd <=10) {
+                 temp_obj.rad = 150;
+                 //temp_obj.color = "#BD0026";
                  temp_obj.color = "#FFAA00";
                }
-               else if(temp_obj.spd <= 35) {
-                 temp_obj.rad = 70;
-                 //temp_obj.color = "#FC4E2A";
+               else if(temp_obj.spd<=15) {
+                 temp_obj.rad = 150;
+                 //temp_obj.color = "#E31A1C";
                  temp_obj.color = "#FFFB00";
                }
-               else if(temp_obj.spd <= 45) {
-                 temp_obj.rad = 60;
-                 //temp_obj.color = "#FD8D3C";
+               else if(temp_obj.spd <= 20) {
+                 temp_obj.rad = 150;
+                 //temp_obj.color = "#FC4E2A";
                  temp_obj.color = "#99D923";
                }
-               else if(temp_obj.spd > 45) {
-                 temp_obj.rad = 50;
+               else if(temp_obj.spd <= 25) {
+                 temp_obj.rad = 150;
+                 //temp_obj.color = "#FD8D3C";
+                 temp_obj.color = "#1A8508";
+               }
+               else if(temp_obj.spd > 25) {
+                 temp_obj.rad = 150;
                  //temp_obj.color = "#FEB24C";
-                 temp_obj.color = "#28C90C";
+                 temp_obj.color = "#1507E0";
                }
             }
            if (headers[j] == 'time'){
@@ -410,8 +411,9 @@ function processData(allText) {
 	var heatmapLayer = new HeatmapOverlay(cfg);
 
 	var mymap = L.map('mapid', {
-		center: [33.9708, -84.223425],
-		zoom: 11.35,
+		center: [33.965759, -84.096407],
+		//zoom: 11.35,
+    zoom: 12,
 		layers: [baseLayer, heatmapLayer]
 		});
 
@@ -429,7 +431,7 @@ function processData(allText) {
     circle = L.circle([obj.lat, obj.lng], {
       color: 'none',
       fillColor: obj.color,
-      fillOpacity: 0.5,
+      fillOpacity: 0.75,
       radius: obj.rad
     });
     circle.addTo(mymap);
@@ -529,21 +531,21 @@ function processData(allText) {
   console.log(mapData);
 
   // Convert arrays to layergroups
-  var sundayLayer = L.layerGroup(sunday);
-  var mondayLayer = L.layerGroup(monday);
-  var tuesdayLayer = L.layerGroup(tuesday);
-  var wednesdayLayer = L.layerGroup(wednesday);
-  var thursdayLayer = L.layerGroup(thursday);
-  var fridayLayer = L.layerGroup(friday);
-  var saturdayLayer = L.layerGroup(saturday);
+  var sundayLayer = L.layerGroup(sunday).addTo(mymap);
+  var mondayLayer = L.layerGroup(monday).addTo(mymap);
+  var tuesdayLayer = L.layerGroup(tuesday).addTo(mymap);
+  var wednesdayLayer = L.layerGroup(wednesday).addTo(mymap);
+  var thursdayLayer = L.layerGroup(thursday).addTo(mymap);
+  var fridayLayer = L.layerGroup(friday).addTo(mymap);
+  var saturdayLayer = L.layerGroup(saturday).addTo(mymap);
 
   // Time of day layers
-  var dawnLayer = L.layerGroup(dawn);
-  var morningLayer = L.layerGroup(morning);
-  var middayLayer = L.layerGroup(midday);
-  var afternoonLayer = L.layerGroup(afternoon);
-  var eveningLayer = L.layerGroup(evening);
-  var nightLayer = L.layerGroup(night);
+  var dawnLayer = L.layerGroup(dawn).addTo(mymap);
+  var morningLayer = L.layerGroup(morning).addTo(mymap);
+  var middayLayer = L.layerGroup(midday).addTo(mymap);
+  var afternoonLayer = L.layerGroup(afternoon).addTo(mymap);
+  var eveningLayer = L.layerGroup(evening).addTo(mymap);
+  var nightLayer = L.layerGroup(night).addTo(mymap);
 
   console.log("Sunday layer");
   console.log(sunday); console.log(sundayLayer);
@@ -586,11 +588,11 @@ info.addTo(mymap);
 
   // add interaction
   function getColor(speed) {
-      return speed > 45  ? '#28C90C' :
-             speed > 35  ? '#99D923' :
-             speed > 25  ? '#FFFB00' :
-             speed > 15   ? '#FFAA00' :
-             speed > 5   ? '#BD0026' :
+      return speed > 25  ? '#1507E0' :
+             speed > 20  ? '#1A8508'  :
+             speed > 15  ?  '#99D923' :
+             speed > 10   ? '#FFFB00' :
+             speed > 5   ? '#FFAA00' :
              speed > 0   ? '#800026' :
                         '#FFEDA0';
   }
@@ -664,7 +666,7 @@ info.addTo(mymap);
   legend.onAdd = function (mymap) {
 
       var div = L.DomUtil.create('div', 'info legend'),
-          grades = [0, 5, 15, 25, 35, 45],
+          grades = [0, 5, 10, 15, 20, 25],
           labels = ['Categories'];
 
       // loop through our density intervals and generate a label with a colored square for each interval
@@ -716,7 +718,7 @@ $(document).ready(function() {
     $.ajax({
         type: "GET",
         //url: "samplecircle.csv",
-        url: "filtered_0604ecb7003b6954_20190508.csv",
+        url: "IntersectionAverages2.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}
