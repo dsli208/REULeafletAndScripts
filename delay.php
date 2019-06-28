@@ -192,7 +192,7 @@ html, body,
       	z-index: 9000;
       }
 
-#mapid { width: 1000px; height: 500px; }
+#mapid { width: 1200px; height: 800px; }
 
 </style>
 

@@ -192,7 +192,7 @@ html, body,
       	z-index: 9000;
       }
 
-#mapid { width: 1000px; height: 500px; }
+#mapid { width: 1200px; height: 800px; }
 
 </style>
 
@@ -333,27 +333,27 @@ function processData(allText) {
                  temp_obj.rad = 100;
                  temp_obj.color = "#800026";
                }
-               else if(temp_obj.spd <=15) {
+               else if(temp_obj.spd <=10) {
                  temp_obj.rad = 100;
                  //temp_obj.color = "#BD0026";
                  temp_obj.color = "#FFAA00";
                }
-               else if(temp_obj.spd<=25) {
+               else if(temp_obj.spd<=15) {
                  temp_obj.rad = 100;
                  //temp_obj.color = "#E31A1C";
                  temp_obj.color = "#FFFB00";
                }
-               else if(temp_obj.spd <= 35) {
+               else if(temp_obj.spd <= 20) {
                  temp_obj.rad = 100;
                  //temp_obj.color = "#FC4E2A";
                  temp_obj.color = "#99D923";
                }
-               else if(temp_obj.spd <= 45) {
+               else if(temp_obj.spd <= 25) {
                  temp_obj.rad = 100;
                  //temp_obj.color = "#FD8D3C";
                  temp_obj.color = "#1A8508";
                }
-               else if(temp_obj.spd > 45) {
+               else if(temp_obj.spd > 25) {
                  temp_obj.rad = 100;
                  //temp_obj.color = "#FEB24C";
                  temp_obj.color = "#1507E0";
