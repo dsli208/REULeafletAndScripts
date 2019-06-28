@@ -330,31 +330,31 @@ function processData(allText) {
            if (headers[j] == 'Average Speeds(mph)') {
                temp_obj.spd = parseFloat(data[j]);
                if(temp_obj.spd<=5) {
-                 temp_obj.rad = 100;
+                 temp_obj.rad = 200;
                  temp_obj.color = "#800026";
                }
                else if(temp_obj.spd <=10) {
-                 temp_obj.rad = 100;
+                 temp_obj.rad = 200;
                  //temp_obj.color = "#BD0026";
                  temp_obj.color = "#FFAA00";
                }
                else if(temp_obj.spd<=15) {
-                 temp_obj.rad = 100;
+                 temp_obj.rad = 200;
                  //temp_obj.color = "#E31A1C";
                  temp_obj.color = "#FFFB00";
                }
                else if(temp_obj.spd <= 20) {
-                 temp_obj.rad = 100;
+                 temp_obj.rad = 200;
                  //temp_obj.color = "#FC4E2A";
                  temp_obj.color = "#99D923";
                }
                else if(temp_obj.spd <= 25) {
-                 temp_obj.rad = 100;
+                 temp_obj.rad = 200;
                  //temp_obj.color = "#FD8D3C";
                  temp_obj.color = "#1A8508";
                }
                else if(temp_obj.spd > 25) {
-                 temp_obj.rad = 100;
+                 temp_obj.rad = 200;
                  //temp_obj.color = "#FEB24C";
                  temp_obj.color = "#1507E0";
                }
@@ -588,10 +588,10 @@ info.addTo(mymap);
 
   // add interaction
   function getColor(speed) {
-      return speed > 45  ? '#1507E0' :
-             speed > 35  ? '#1A8508'  :
-             speed > 25  ?  '#99D923' :
-             speed > 15   ? '#FFFB00' :
+      return speed > 25  ? '#1507E0' :
+             speed > 20  ? '#1A8508'  :
+             speed > 15  ?  '#99D923' :
+             speed > 10   ? '#FFFB00' :
              speed > 5   ? '#FFAA00' :
              speed > 0   ? '#800026' :
                         '#FFEDA0';
@@ -666,7 +666,7 @@ info.addTo(mymap);
   legend.onAdd = function (mymap) {
 
       var div = L.DomUtil.create('div', 'info legend'),
-          grades = [0, 5, 15, 25, 35, 45],
+          grades = [0, 5, 10, 15, 20, 25],
           labels = ['Categories'];
 
       // loop through our density intervals and generate a label with a colored square for each interval
