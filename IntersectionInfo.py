@@ -34,7 +34,7 @@ def getTimeDifferenceInSeconds(time1List, time2List):
 
 
 if __name__ == "__main__":
-    with open("C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/finalwithIntersectionIDsOnly.csv"
+    with open("C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/final_filtered_bigfilter.csv"
             , 'r') as csvfile:
 
         print("Reading csv file")
@@ -48,7 +48,7 @@ if __name__ == "__main__":
         for row in csvreader:
             rows.append(row)
 
-    with open("C:/my collection/REU 2019/R Programming directory/Intersection_Info_comb.csv", 'r') as csvfile:
+    with open("C:/Users/dsli/Documents/Civic Data Science/Intersection_Info_comb.csv", 'r') as csvfile:
         print("Reading csv file")
         # creating a csv reader object
         csvreader = csv.reader(csvfile)
@@ -131,7 +131,7 @@ if __name__ == "__main__":
         if newIntersectionInfo[j][3] == 0:
             newIntersectionInfo.remove(newIntersectionInfo[j])
 
-    with open('C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/IntersectionAverages.csv'
+    with open('C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/filtered_avg_data.csv'
             , 'w', newline="") as myfile:
             print("Writing csv file")
             wr = csv.writer(myfile, quoting=csv.QUOTE_NONE)

@@ -382,9 +382,19 @@ function processData(allText) {
 	  data: lines
 	};
 
-	var baseLayer = L.tileLayer(
-	  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-		attribution: '...',
+  var oldMapURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    oldMapAttr = '...';
+  var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+	var baseLayer   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr});
+
+	var baseLayer1 = L.tileLayer(
+	  mbUrl,{
+      id: 'mapbox.light',
+		attribution: mbAttr,
 		maxZoom: 30
 	  }
 	);
@@ -414,15 +424,15 @@ function processData(allText) {
 		center: [33.965759, -84.096407],
 		//zoom: 11.35,
     zoom: 12,
-		layers: [baseLayer, heatmapLayer]
+		layers: [baseLayer]
 		});
 
-		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		/*L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery � <a href="https://www.mapbox.com/">Mapbox</a>',
 			maxZoom: 18,
 			id: 'mapbox.streets',
 			accessToken: 'pk.eyJ1IjoiYWxhdTMzIiwiYSI6ImNqd2phYTZ4ODAzbnk0YW9lYWdzOTlpZGEifQ.4hhK6mhqi2brriiB7bEyuw'
-	}).addTo(mymap);
+	}).addTo(mymap);*/
 
   for (var i = 0; i < vehicleLocationArray.length; i++) {
     var obj = vehicleLocationArray[i];
@@ -718,7 +728,7 @@ $(document).ready(function() {
     $.ajax({
         type: "GET",
         //url: "samplecircle.csv",
-        url: "IntersectionAverages2.csv",
+        url: "filtered_avg_data.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}
