@@ -235,10 +235,6 @@ if __name__ == "__main__":
                         intersectionID = rows[i][approaches[q] - 6]
                         intersectionLoc = getIntersectionLocation(int(intersectionID), intersections)
 
-            else:
-                ignoreInter.clear()
-                continue
-
             if intersectionID in ignoreInter or rows[i][columnLength + 19] != "":
                 continue
             j = i
