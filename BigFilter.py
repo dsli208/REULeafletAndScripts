@@ -53,7 +53,7 @@ if __name__ == "__main__":
         if rows[j][0] == 'time':
             rows.pop(j)
 
-    with open("C:/my collection/REU 2019/R Programming directory/Intersection_Info_comb.csv", 'r') as csvfile:
+    with open("C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/newfile.csv", 'r') as csvfile:
         print("Reading csv file")
         # creating a csv reader object
         csvreader = csv.reader(csvfile)
@@ -186,7 +186,7 @@ if __name__ == "__main__":
                    'Distance to Intersection 3 (feet)', 'Distance to Intersection 4 (feet)',
                    'Distance to Intersection 5 (feet)', 'Distance to Intersection 6 (feet)', ])
 
-    with open('C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/finalwithIntersectionIDsOnly.csv'
+    with open('C:/Users/dsli/Documents/Civic Data Science/Intersection_Info_comb.csv'
             , 'w', newline="") as myfile:
         print("Writing csv file")
         wr = csv.writer(myfile, quoting=csv.QUOTE_NONE)
@@ -307,7 +307,7 @@ if __name__ == "__main__":
                 ignoreInter.remove(ignoreInter[b])
 
     fields.extend(['Left Turn', 'Straight', 'Right Turn', 'Low Confidence'])
-    with open('C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/finalwithIntersection.csv', 'w',
+    with open('C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/final_filtered_bigfilter3.csv', 'w',
               newline="") as myfile:
         print("Writing csv file")
         wr = csv.writer(myfile, quoting=csv.QUOTE_NONE)
