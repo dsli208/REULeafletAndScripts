@@ -34,7 +34,7 @@ def getTimeDifferenceInSeconds(time1List, time2List):
 
 
 if __name__ == "__main__":
-    with open("C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/final_filtered_bigfilter.csv"
+    with open("C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/finalwithIntersection.csv"
             , 'r') as csvfile:
 
         print("Reading csv file")
@@ -48,7 +48,7 @@ if __name__ == "__main__":
         for row in csvreader:
             rows.append(row)
 
-    with open("C:/Users/dsli/Documents/Civic Data Science/Intersection_Info_comb.csv", 'r') as csvfile:
+    with open("C:/my collection/REU 2019/R Programming directory/Intersection_Info_comb.csv", 'r') as csvfile:
         print("Reading csv file")
         # creating a csv reader object
         csvreader = csv.reader(csvfile)
@@ -71,13 +71,12 @@ if __name__ == "__main__":
         newIntersectionInfo[i][0:3] = intersections[i][0:3]
         newIntersectionInfo[i][3:7] = [0, 0, 0, 0]
 
-
     for row in rows:
-        approaches = [g for g in range(columnLength - 15, columnLength - 9) if row[g] == 'Yes']
-        if row[columnLength - 15: columnLength - 9].count('Yes') == 1:
+        approaches = [g for g in range(columnLength - 16, columnLength - 10) if row[g] == 'Yes']
+        if row[columnLength - 16: columnLength - 10].count('Yes') == 1:
             intersectionID = row[approaches[0] - 6]
-        elif row[columnLength - 15: columnLength - 9].count('Yes') > 1:
-            approaches = [g for g in range(columnLength - 15, columnLength - 9) if row[g] == 'Yes']
+        elif row[columnLength - 16: columnLength - 10].count('Yes') > 1:
+            approaches = [g for g in range(columnLength - 16, columnLength - 10) if row[g] == 'Yes']
             intersectionID = row[approaches[0] - 6]
             intersectionLoc = getIntersectionLocation(int(intersectionID), intersections)
             leastDistance = getDistance((float(row[1]), float(row[2])), intersectionLoc)
@@ -96,7 +95,7 @@ if __name__ == "__main__":
 
     ignoreList = []
     for i in range(0, len(rows)):
-        interID = rows[i][columnLength - 21: columnLength - 15]
+        interID = rows[i][columnLength - 22: columnLength - 16]
         for j in range(0, len(interID)):
             if interID[j] == "":
                 break
@@ -131,7 +130,7 @@ if __name__ == "__main__":
         if newIntersectionInfo[j][3] == 0:
             newIntersectionInfo.remove(newIntersectionInfo[j])
 
-    with open('C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/filtered_avg_data.csv'
+    with open('C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/IntersectionAverages.csv'
             , 'w', newline="") as myfile:
             print("Writing csv file")
             wr = csv.writer(myfile, quoting=csv.QUOTE_NONE)

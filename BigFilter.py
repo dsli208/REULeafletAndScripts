@@ -20,9 +20,8 @@ def getBearing(tuple1, tuple2):
     X = cos(radians(tuple2[0])) * sin(radians(abs(tuple1[1] - tuple2[1])))
     Y = cos(radians(tuple1[0])) * sin(radians(tuple2[0])) - sin(radians(tuple1[0])) * cos(radians(tuple2[0])) * \
         cos(radians(abs(tuple1[1] - tuple2[1])))
-    beta = degrees(atan2(X, Y))
-    if beta < 0:
-        beta += 360
+    beta = (degrees(atan2(X, Y)) + 360.0) % 360
+
     return beta
 
 def kmToFeet(value):
@@ -30,8 +29,6 @@ def kmToFeet(value):
 
 def getIntersectionLocation(intersectionID, intersections):
     for b in range(0, len(intersections)):
-        print("IntersectionID is " + str(intersectionID))
-        print("intersections[b][0] is " + intersections[b][0])
         if intersectionID == intersections[b][0]:
             break
     return (float(intersections[b][1]), float(intersections[b][2]))
@@ -40,7 +37,7 @@ def getIntersectionLocation(intersectionID, intersections):
 
 if __name__ == "__main__":
 
-    with open("C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/newfile.csv", 'r') as csvfile:
+    with open("C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/newfile.csv", 'r') as csvfile:
         print("Reading csv file")
         # creating a csv reader object
         csvreader = csv.reader(csvfile)
@@ -56,7 +53,7 @@ if __name__ == "__main__":
         if rows[j][0] == 'time':
             rows.pop(j)
 
-    with open("C:/Users/dsli/Documents/Civic Data Science/Intersection_Info_comb.csv", 'r') as csvfile:
+    with open("C:/my collection/REU 2019/R Programming directory/Intersection_Info_comb.csv", 'r') as csvfile:
         print("Reading csv file")
         # creating a csv reader object
         csvreader = csv.reader(csvfile)
@@ -71,14 +68,13 @@ if __name__ == "__main__":
     columnLength = len(rows[0])
 
     for row in rows:
-        for i in range(columnLength, columnLength + 22):
+        for i in range(columnLength, columnLength + 23):
             row.append("")
 
     print("Finding Intersections for Locations")
     i = 0
     for row in rows:
-        print("i is " + str(i))
-        print("Length of Rows is " + str(len(rows)))
+        print(" i is " + str(i) + " and length of rows is " + str(len(rows)))
         LocationIndex = columnLength + 1
         NumIntersection = 0
         fireTruckLocation = (float(row[1]), float(row[2]))
@@ -98,8 +94,6 @@ if __name__ == "__main__":
 
     print("Figuring out Approaching or Receding")
     for i in range(0, len(rows)):
-        print("i is " + str(i))
-        print("Length of Rows is " + str(len(rows)))
         fireTruckLocation1 = (float(rows[i][1]), float(rows[i][2]))
         for j in range(columnLength + 1, columnLength + 7):
             print("rows[i][j] is " + rows[i][j])
@@ -184,6 +178,22 @@ if __name__ == "__main__":
                         if j == columnLength + 6:
                             rows[i][columnLength + 12] = 'No'
 
+    fields.extend(['Number of Intersections', 'Intersection 1 ID', 'Intersection 2 ID', 'Intersection 3 ID',
+                   'Intersection 4 ID', 'Intersection 5 ID', 'Intersection 6 ID', 'Approaching Intersection 1',
+                   'Approaching Intersection 2', 'Approaching Intersection 3', 'Approaching Intersection 4',
+                   'Approaching Intersection 5', 'Approaching Intersection 6',
+                   'Distance to Intersection 1 (feet)', 'Distance to Intersection 2 (feet)',
+                   'Distance to Intersection 3 (feet)', 'Distance to Intersection 4 (feet)',
+                   'Distance to Intersection 5 (feet)', 'Distance to Intersection 6 (feet)', ])
+
+    with open('C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/finalwithIntersectionIDsOnly.csv'
+            , 'w', newline="") as myfile:
+        print("Writing csv file")
+        wr = csv.writer(myfile, quoting=csv.QUOTE_NONE)
+        wr.writerow(fields)
+        for row in rows:
+            wr.writerow(row)
+
     print("Fixing Bearing Values")
     for i in range(0, len(rows)):
         if rows[i][5] == "":
@@ -199,47 +209,47 @@ if __name__ == "__main__":
                 c2 = (float(rows[i][1]), float(rows[i][2]))
                 rows[i][5] = getBearing(c2, c1)
 
+    ignoreInter = []
     print("Figuring out Turns")
     for i in range(0, len(rows)):
-        if rows[i][columnLength + 7] == 'Yes':
+        print("i is " + str(i) + " and length of rows is " + str(len(rows)))
+        print("Number of Yes is " + str(rows[i][columnLength + 7:columnLength + 13].count('Yes')))
+        if rows[i][columnLength + 7] != "":
             fireTruckLocation = (float(rows[i][1]), float(rows[i][2]))
             if rows[i][columnLength + 7:columnLength + 13].count('Yes') == 1:
-                intersectionID = rows[i][columnLength + 1]
-                intersectionLoc = getIntersectionLocation(int(intersectionID), intersections)
-
-                print("intersectionID is " + str(intersectionID))
-                print(type(int(intersectionID)))
-
-                print("fireTruckLocation is " + str(fireTruckLocation))
-                print("intersectionLoc is " + str(intersectionLoc))
-
-                leastDistance = getDistance(fireTruckLocation, intersectionLoc)
-
-            elif rows[i][columnLength + 7:columnLength + 13].count('Yes') > 1:
                 approaches = [g for g in range(columnLength + 7, columnLength + 13) if rows[i][g] == 'Yes']
                 intersectionID = rows[i][approaches[0] - 6]
                 intersectionLoc = getIntersectionLocation(int(intersectionID), intersections)
-                print("fireTruckLocation is " + str(fireTruckLocation))
-                print("intersectionLoc is " + str(intersectionLoc))
+                leastDistance = getDistance(fireTruckLocation, intersectionLoc)
+
+            elif rows[i][columnLength + 7:columnLength + 13].count('Yes') > 1:
+                rows[i][columnLength + 22] = 'Low'
+                approaches = [g for g in range(columnLength + 7, columnLength + 13) if rows[i][g] == 'Yes']
+                intersectionID = rows[i][approaches[0] - 6]
+                intersectionLoc = getIntersectionLocation(int(intersectionID), intersections)
                 leastDistance = getDistance(fireTruckLocation, intersectionLoc)
                 for q in range(1, len(approaches)):
-                    print("Approaches length is " + len(approaches))
                     d = getDistance(fireTruckLocation, getIntersectionLocation(rows[i][approaches[q] - 6], intersections))
                     if d < leastDistance:
                         leastDistance = d
                         intersectionID = rows[i][approaches[q] - 6]
                         intersectionLoc = getIntersectionLocation(int(intersectionID), intersections)
 
+            else:
+                ignoreInter.clear()
+                continue
+
+            if intersectionID in ignoreInter or rows[i][columnLength + 19] != "":
+                continue
             j = i
-            print("J is " + str(j))
             while j < len(rows):
-                if intersectionID in rows[j][columnLength + 1:columnLength + 7]:
+                if ('Yes' in rows[j]) and (intersectionID in rows[j][columnLength + 1:columnLength + 7]):
                     j += 1
                 else:
                     break
 
-            if j >= i:
-                break
+            if j == i:
+                continue
 
             if j == len(rows):
                 j = len(rows) - 1
@@ -258,7 +268,6 @@ if __name__ == "__main__":
                 g = i
 
             for h in range(k, j):
-                print("h is " + str(h))
                 distance = kmToFeet(getDistance((float(rows[h][1]), float(rows[h][2])), intersectionLoc))
                 if distance > 200.0:
                     break
@@ -269,43 +278,40 @@ if __name__ == "__main__":
             FireTruckLocation1 = (float(rows[g][1]), float(rows[g][2]))
             FireTruckLocation2 = (float(rows[h][1]), float(rows[h][2]))
             bearing2 = getBearing(intersectionLoc, FireTruckLocation2)
-            bearing1 = getBearing(intersectionLoc, FireTruckLocation1)
+            bearing1 = getBearing(FireTruckLocation1, intersectionLoc)
+            print("bearing2 is " + str(bearing2))
+            print("bearing1 is " + str(bearing1))
             diffBearing = bearing2 - bearing1
 
+            print("i is " + str(i) + " and k is " + str(k) + " and j is " + str(j))
+            print("diffBearing is " + str(diffBearing))
+
             if 75 <= diffBearing and diffBearing <= 105:
-                for u in range(i, k + 1):
+                for u in range(i, k):
                     rows[u][columnLength + 19] = 0
                     rows[u][columnLength + 20] = 0
                     rows[u][columnLength + 21] = 1
 
             elif (-105 <= diffBearing and diffBearing <= -180) or (105 < diffBearing and diffBearing <= 180):
-                for u in range(i, k + 1):
+                for u in range(i, k):
                     rows[u][columnLength + 19] = 1
                     rows[u][columnLength + 20] = 0
                     rows[u][columnLength + 21] = 0
 
             elif -75 < diffBearing < 75:
-                for u in range(i, k + 1):
+                for u in range(i, k):
                     rows[u][columnLength + 19] = 0
                     rows[u][columnLength + 20] = 1
                     rows[u][columnLength + 21] = 0
 
-        i = k
-        while i < len(rows):
-            if 'Yes' not in rows[i]:
-                i += 1
+            ignoreInter.append(intersectionID)
 
-        i = i - 1
+        for b in range(len(ignoreInter) - 1, -1, -1):
+            if ignoreInter[b] not in rows[i]:
+                ignoreInter.remove(ignoreInter[b])
 
-
-    fields.extend(['Number of Intersections', 'Intersection 1 ID', 'Intersection 2 ID', 'Intersection 3 ID',
-                   'Intersection 4 ID', 'Intersection 5 ID', 'Intersection 6 ID', 'Approaching Intersection 1',
-                   'Approaching Intersection 2', 'Approaching Intersection 3', 'Approaching Intersection 4',
-                   'Approaching Intersection 5', 'Approaching Intersection 6', 'Distance to Intersection 1 (feet)',
-                   'Distance to Intersection 2 (feet)', 'Distance to Intersection 3 (feet)',
-                   'Distance to Intersection 4 (feet)', 'Distance to Intersection 5 (feet)',
-                   'Distance to Intersection 6 (feet)', 'Left Turn', 'Straight', 'Right Turn'])
-    with open('C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/final_filtered_bigfilter.csv', 'w',
+    fields.extend(['Left Turn', 'Straight', 'Right Turn', 'Low Confidence'])
+    with open('C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/finalwithIntersection.csv', 'w',
               newline="") as myfile:
         print("Writing csv file")
         wr = csv.writer(myfile, quoting=csv.QUOTE_NONE)
