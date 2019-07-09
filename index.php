@@ -728,7 +728,7 @@ $(document).ready(function() {
     $.ajax({
         type: "GET",
         //url: "samplecircle.csv",
-        url: "filtered_avg_data.csv",
+        url: "filtered_avg_data2.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}

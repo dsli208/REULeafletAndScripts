@@ -37,7 +37,7 @@ def getIntersectionLocation(intersectionID, intersections):
 
 if __name__ == "__main__":
 
-    with open("C:/my collection/REU 2019/R Programming directory/GPS Copy/FilteredData/newfile.csv", 'r') as csvfile:
+    with open("C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/newfile.csv", 'r') as csvfile:
         print("Reading csv file")
         # creating a csv reader object
         csvreader = csv.reader(csvfile)
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         if rows[j][0] == 'time':
             rows.pop(j)
 
-    with open("C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/newfile.csv", 'r') as csvfile:
+    with open("C:/Users/dsli/Documents/Civic Data Science/Intersection_Info_comb.csv", 'r') as csvfile:
         print("Reading csv file")
         # creating a csv reader object
         csvreader = csv.reader(csvfile)
@@ -186,7 +186,7 @@ if __name__ == "__main__":
                    'Distance to Intersection 3 (feet)', 'Distance to Intersection 4 (feet)',
                    'Distance to Intersection 5 (feet)', 'Distance to Intersection 6 (feet)', ])
 
-    with open('C:/Users/dsli/Documents/Civic Data Science/Intersection_Info_comb.csv'
+    with open('C:/Users/dsli/Documents/Civic Data Science/script_filtered_2/intermediate_bigfilter.csv'
             , 'w', newline="") as myfile:
         print("Writing csv file")
         wr = csv.writer(myfile, quoting=csv.QUOTE_NONE)
