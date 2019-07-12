@@ -39,6 +39,9 @@ crossorigin=""/>
 <!-- include cartodb.js library -->
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
+<!-- Load d3.js/plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
 <style>
 
 #loader {
@@ -219,6 +222,10 @@ html, body,
 -->
 <br />
 <div id="mapid"></div>
+
+<!-- Create a div where the graph will take place -->
+<div id="myDiv"></div>
+
 <!--
 <div id='selector_menu'>
 		<select id='selector'>
@@ -237,8 +244,66 @@ html, body,
 
 <script>
 
+x = ["Intersection1","Intersection2","Intersection3","Intersection4", "Intersection5", "Intersection6", "Intersection7", "Intersection8"]
+y = ["20","10","3","10","5", "23", "64", "83"]
+
+
+data = [
+  {
+    histfunc: "count",
+    y: y,
+    x: x,
+    type: "histogram",
+    name: "monday"
+  },
+  {
+    histfunc: "count",
+    y: y,
+    x: x,
+    type: "histogram",
+    name: "tuesday"
+  },
+  {
+    histfunc: "count",
+    y: y,
+    x: x,
+    type: "histogram",
+    name: "wednesday"
+  },
+  {
+    histfunc: "count",
+    y: y,
+    x: x,
+    type: "histogram",
+    name: "thursday"
+  },
+  {
+    histfunc: "count",
+    y: y,
+    x: x,
+    type: "histogram",
+    name: "friday"
+  },
+  {
+    histfunc: "count",
+    y: y,
+    x: x,
+    type: "histogram",
+    name: "saturday"
+  },
+  {
+    histfunc: "count",
+    y: y,
+    x: x,
+    type: "histogram",
+    name: "sunday"
+  }
+]
+
+Plotly.plot('myDiv', data, {}, {showSendToCloud: true})
+
 var glob_day;
-console.log(location.search.substring(1));
+//console.log(location.search.substring(1));
 if (location.search.substring(1) == 'day=0') {
   glob_day = 0;
 }
@@ -373,9 +438,9 @@ function processData(allText) {
      }
    }
 
-    console.log(circles);
+    //console.log(circles);
     var smthg = [{lat: 34.022398, lng:-84.119096, count: 10}, {lat: 33.969825, lng:-84.223736, count: 5}]
-	console.log("smthg "+smthg.length);
+	//console.log("smthg "+smthg.length);
 
 	var testData = {
 	  max: 10000000,
@@ -436,7 +501,7 @@ function processData(allText) {
 
   for (var i = 0; i < vehicleLocationArray.length; i++) {
     var obj = vehicleLocationArray[i];
-    console.log(obj);
+    //console.log(obj);
     //Change the size and color of circular markers here
     circle = L.circle([obj.lat, obj.lng], {
       color: 'none',
@@ -464,66 +529,66 @@ function processData(allText) {
 
 
       if (obj.day == 0) {
-        console.log("Sunday");
+        //console.log("Sunday");
         sunday.push(circle);
       }
       else if (obj.day == 1) {
-        console.log("Monday");
+        //console.log("Monday");
         monday.push(circle);
       }
       else if (obj.day == 2) {
-        console.log("Tuesday");
+        //console.log("Tuesday");
         tuesday.push(circle);
       }
       else if (obj.day == 3) {
-        console.log("Wednesday");
+        //console.log("Wednesday");
         wednesday.push(circle);
       }
       else if (obj.day == 4) {
-        console.log("Thursday");
+        //console.log("Thursday");
         thursday.push(circle);
       }
       else if (obj.day == 5) {
-        console.log("Friday");
+        //console.log("Friday");
         friday.push(circle);
       }
       else if (obj.day == 6) {
-        console.log("Saturday");
+        //console.log("Saturday");
         saturday.push(circle);
       }
 
 
         if (obj.hour >= 3 && obj.hour < 7) {
-          console.log("Dawn");
+          //console.log("Dawn");
           dawn.push(circle);
         }
         else if (obj.hour >= 7 && obj.hour < 11) {
-          console.log("Morning");
+          //console.log("Morning");
           morning.push(circle);
         }
         else if (obj.hour >= 11 && obj.hour < 15) {
-          console.log("Midday");
+          //console.log("Midday");
           midday.push(circle);
         }
         else if (obj.hour >= 15 && obj.hour < 19) {
-          console.log("Afternoon");
+          //console.log("Afternoon");
           afternoon.push(circle);
         }
         else if (obj.hour >= 19 && obj.hour < 23) {
-          console.log("Evening");
+          //console.log("Evening");
           evening.push(circle);
         }
         else if (obj.hour >= 23 || obj.hour <3) {
-          console.log("Night");
+          //console.log("Night");
           night.push(circle);
         }
   }
 
 
-  console.log(circles);
+  //console.log(circles);
   circles.forEach(function(obj) {
         var index = circles.indexOf(obj);
-        console.log(index);
+        //console.log(index);
 				//obj[0].bindPopup('ID: '+obj[1].site_id);
 				obj.on('mouseover', function (e) {
 					//this.openPopup();
@@ -538,7 +603,7 @@ function processData(allText) {
         })
 	});
 
-  console.log(mapData);
+  //console.log(mapData);
 
   // Convert arrays to layergroups
   var sundayLayer = L.layerGroup(sunday).addTo(mymap);
@@ -557,8 +622,8 @@ function processData(allText) {
   var eveningLayer = L.layerGroup(evening).addTo(mymap);
   var nightLayer = L.layerGroup(night).addTo(mymap);
 
-  console.log("Sunday layer");
-  console.log(sunday); console.log(sundayLayer);
+  //console.log("Sunday layer");
+  //console.log(sunday); console.log(sundayLayer);
 
   var overlayMaps = {
     "Sunday": sundayLayer,
@@ -619,7 +684,7 @@ info.addTo(mymap);
   	}
 
   	function highlightFeature(e) {
-      console.log("Highlight Feature");
+      //console.log("Highlight Feature");
 
   		var layer = e.target;
 
@@ -640,18 +705,18 @@ info.addTo(mymap);
   	var geojson;
 
   	function resetHighlight(e) {
-      console.log("Reset Highlight");
+      //console.log("Reset Highlight");
   		geojson.resetStyle(e.target);
   		info.update();
   	}
 
   	function zoomToFeature(e) {
-      console.log("Zoom to Feature");
+      //console.log("Zoom to Feature");
   		mymap.fitBounds(e.target.getBounds());
   	}
 
   	function onEachFeature(feature, layer) {
-      console.log("On each feature");
+      //console.log("On each feature");
   		layer.on({
   			mouseover: highlightFeature,
   			mouseout: resetHighlight,
@@ -661,8 +726,8 @@ info.addTo(mymap);
 
     var mapData = {"type":"FeatureCollection","features": mapFeatures};
     //console.log(mapData);
-    console.log("Map features");
-    console.log(mapFeatures);
+    //console.log("Map features");
+    //console.log(mapFeatures);
 
   	geojson = L.geoJson(mapFeatures, {
   		style: style,
