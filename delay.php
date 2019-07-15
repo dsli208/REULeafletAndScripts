@@ -237,6 +237,96 @@ html, body,
 
 <script>
 
+var x1 = [];
+var x2 = [];
+var x3 = [];
+var x4 = [];
+var x5 = [];
+var x6 = [];
+var x7 = [];
+
+for (var i = 0; i < 500; i++) {
+    x1[i] = Math.floor(Math.random() * 7);
+    x2[i] = Math.floor(Math.random() * 7);
+    x3[i] = Math.floor(Math.random() * 7);
+    x4[i] = Math.floor(Math.random() * 7);
+    x5[i] = Math.floor(Math.random() * 7);
+    x6[i] = Math.floor(Math.random() * 7);
+    x7[i] = Math.floor(Math.random() * 7);
+}
+
+var trace1 = {
+  x: x1,
+  type: "histogram",
+  name: "Week 0"
+};
+var trace2 = {
+  x: x2,
+  type: "histogram",
+  name: "Week 1"
+};
+var trace3 = {
+  x: x3,
+  type: "histogram",
+  name: "Week 2"
+};
+var trace4 = {
+  x: x4,
+  type: "histogram",
+  name: "Week 3"
+};
+var trace5 = {
+  x: x5,
+  type: "histogram",
+  name: "Week 4"
+};
+var trace6 = {
+  x: x6,
+  type: "histogram",
+  name: "Week 5"
+};
+var trace7 = {
+  x: x7,
+  type: "histogram",
+  name: "Week 6"
+};
+
+var data1 = [trace1, trace2, trace3, trace4, trace5, trace6, trace7];
+//console.log(data);
+var layout1 = {barmode: "stack",
+                title: {
+                  text:'Fire Truck Encounters at Traffic Intersection X',
+                  font: {
+                    family: 'Courier New, monospace',
+                    size: 24
+                    //align: 'center'
+                  },
+                  xref: 'paper',
+                  //x: 0.05,
+                },
+                xaxis: {
+                  title: {
+                    text: 'Day of Week',
+                    font: {
+                      family: 'Courier New, monospace',
+                      size: 18,
+                      color: '#7f7f7f'
+                    }
+                  },
+                },
+                yaxis: {
+                  title: {
+                    text: 'Intersection Encounters',
+                    font: {
+                      family: 'Courier New, monospace',
+                      size: 18,
+                      color: '#7f7f7f'
+                    }
+                  }}
+};
+
+Plotly.newPlot("myDiv", data1, layout1, {showSendToCloud: true});
+
 var glob_day;
 console.log(location.search.substring(1));
 if (location.search.substring(1) == 'day=0') {
