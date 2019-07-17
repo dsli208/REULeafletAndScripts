@@ -276,7 +276,40 @@ Date.prototype.getWeekYear = function() {
 // Datepicker
 $( function() {
     $( "#datepicker" ).datepicker();
+    $( "#datepicker" ).datepicker( "setDate", "6/4/2019" );
+    var currentDate = $( "#datepicker" ).datepicker( "getDate" );
+    console.log(currentDate);
   } );
+
+var glob_int;
+
+var glob_month;
+var glob_day;
+//console.log(location.search.substring(1));
+if (location.search.substring(1) == 'day=0') {
+  glob_day = 0;
+}
+else if (location.search.substring(1) == 'day=1') {
+  glob_day = 1;
+}
+else if (location.search.substring(1) == 'day=2') {
+  glob_day = 2;
+}
+else if (location.search.substring(1) == 'day=3') {
+  glob_day = 3;
+}
+else if (location.search.substring(1) == 'day=4') {
+  glob_day = 4;
+}
+else if (location.search.substring(1) == 'day=5') {
+  glob_day = 5;
+}
+else if (location.search.substring(1) == 'day=6') {
+  glob_day = 6;
+}
+else {
+  glob_day = -1;
+}
 
 // Data for histograms (both types)
 // x1 is Sunday, x7 is Saturday
@@ -325,11 +358,13 @@ function processTrafficData(trafficText) {
       if (temp_obj.date != null) {
         var day = temp_obj.date.getDay();
         var week = temp_obj.date.getWeek();
+
+        
       }
 
       // Now sort by INTERSECTION
       if (temp_obj.id != null) {
-        
+
       }
     }
   }
@@ -373,22 +408,32 @@ var trace7 = {
 };
 
 var data1 = [trace1, trace2, trace3, trace4, trace5, trace6, trace7];
-var data2 = []; // manually push traces of intersection id when they come in
+
+var x = [];
+for (var i = 0; i < 500; i ++) {
+    x.push(Math.floor(Math.random() * 100));
+}
+
+var trace8 = {
+    x: x,
+    type: 'histogram',
+  };
+
+var data2 = [trace8]; // manually push traces of intersection id when they come in
 
 var layout1 = {barmode: "stack",
                 title: {
-                  text:'Fire Truck Encounters at Traffic Intersections on <date>',
+                  text:'Fire Truck Encounters at Traffic Intersection X',
                   font: {
                     family: 'Courier New, monospace',
                     size: 24
-                    //align: 'center'
                   },
                   xref: 'paper',
                   //x: 0.05,
                 },
                 xaxis: {
                   title: {
-                    text: 'Intersection ID',
+                    text: 'Day',
                     font: {
                       family: 'Courier New, monospace',
                       size: 18,
@@ -409,11 +454,10 @@ var layout1 = {barmode: "stack",
 
 var layout2 = {barmode: "stack",
                 title: {
-                  text:'Fire Truck Encounters at Traffic Intersection X',
+                  text:'Fire Truck Encounters at Traffic Intersections on <date>',
                   font: {
                     family: 'Courier New, monospace',
                     size: 24
-                    //align: 'center'
                   },
                   xref: 'paper',
                   //x: 0.05,
@@ -427,6 +471,8 @@ var layout2 = {barmode: "stack",
                       color: '#7f7f7f'
                     }
                   },
+                  tickwidth: 1,
+                  ticklen: 1
                 },
                 yaxis: {
                   title: {
@@ -480,15 +526,6 @@ $(document).ready(function() {
         dataType: "text",
         success: function(data) {
           processTrafficData(data);
-
-          /*$.ajax({
-            type: "GET",
-            //url:
-            dataType: "text",
-            success: function(trafficData) {
-              processTrafficData(trafficData);
-            }
-          })*/
         }
      });
 });

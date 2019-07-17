@@ -263,6 +263,20 @@ for (var i = 0; i < 500; i++) {
     x7[i] = Math.floor(Math.random() * 7);
 }
 
+function processTrafficData(trafficText) {
+  var lines=[];
+  var allTextLines = allText.split(/\r\n|\n/);
+  var headers = allTextLines[0].split(',');
+
+  for (var i = 1; i < allTextLines.length; i++) {
+
+  }
+  var data = allTextLines[i].split(',');
+
+  if (data.length == headers.length) {
+  }
+}
+
 var trace1 = {
   x: x1,
   type: "histogram",
@@ -334,64 +348,6 @@ var layout1 = {barmode: "stack",
 };
 
 Plotly.newPlot("myDiv", data1, layout1, {showSendToCloud: true});
-
-/*x = ["Intersection1","Intersection2","Intersection3"]
-y = ["20","10","3","10","5", "23", "64", "83"]
-
-
-data = [
-  {
-    histfunc: "count",
-    y: y,
-    x: x,
-    type: "histogram",
-    name: "monday"
-  },
-  {
-    histfunc: "count",
-    y: y,
-    x: x,
-    type: "histogram",
-    name: "tuesday"
-  },
-  {
-    histfunc: "count",
-    y: y,
-    x: x,
-    type: "histogram",
-    name: "wednesday"
-  },
-  {
-    histfunc: "count",
-    y: y,
-    x: x,
-    type: "histogram",
-    name: "thursday"
-  },
-  {
-    histfunc: "count",
-    y: y,
-    x: x,
-    type: "histogram",
-    name: "friday"
-  },
-  {
-    histfunc: "count",
-    y: y,
-    x: x,
-    type: "histogram",
-    name: "saturday"
-  },
-  {
-    histfunc: "count",
-    y: y,
-    x: x,
-    type: "histogram",
-    name: "sunday"
-  }
-]
-
-Plotly.plot('myDiv', data, {}, {showSendToCloud: true})*/
 
 var glob_day;
 //console.log(location.search.substring(1));
@@ -887,7 +843,18 @@ $(document).ready(function() {
         url: "filtered_avg_data2.csv",
         //url: "final.csv",
         dataType: "text",
-        success: function(data) {processData(data);}
+        success: function(data) {
+          processData(data);
+
+          $.ajax({
+            type: "GET",
+            //url:
+            dataType: "text",
+            success: function(trafficData) {
+              processTrafficData(trafficData);
+            }
+          })
+        }
      });
 });
 
