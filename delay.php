@@ -421,7 +421,7 @@ function processData(allText) {
                temp_obj.delay = parseFloat(data[j]);
                if(temp_obj.delay <= 10 || temp_obj.delay == null) {
                  temp_obj.rad = 150;
-                 temp_obj.color = "#1507E0";
+                 temp_obj.color = "#D3D3D3";
 
                }
                else if(temp_obj.delay <= 20) {
@@ -691,7 +691,7 @@ info.addTo(mymap);
            d > 30  ?  '#FFFB00' :
            d > 20   ? '#99D923' :
            d > 10   ? '#1A8508' :
-           d > 0   ?  '#1507E0' :
+           d > 0   ?  '#D3D3D3' :
                       '#FFEDA0';
   }
 

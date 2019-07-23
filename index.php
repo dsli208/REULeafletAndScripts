@@ -468,7 +468,7 @@ function processData(allText) {
                else if(temp_obj.spd > 25) {
                  temp_obj.rad = 150;
                  //temp_obj.color = "#FEB24C";
-                 temp_obj.color = "#1507E0";
+                 temp_obj.color = "#D3D3D3";
                }
             }
            if (headers[j] == 'time'){
@@ -710,7 +710,7 @@ info.addTo(mymap);
 
   // add interaction
   function getColor(speed) {
-      return speed > 25  ? '#1507E0' :
+      return speed > 25  ? '#D3D3D3' :
              speed > 20  ? '#1A8508'  :
              speed > 15  ?  '#99D923' :
              speed > 10   ? '#FFFB00' :
