@@ -20,7 +20,7 @@
 <head>
 
 <title>Test Map 2</title>
-
+<!-- Add leaflet sources -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
 	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 crossorigin=""/>
@@ -224,7 +224,7 @@ html, body,
 <div id="mapid"></div>
 
 <!-- Create a div where the graph will take place -->
-<p> Histogram for Intersection X </p><br />
+<!--<p> Histogram for Intersection X </p><br /> -->
 <div id="myDiv"></div>
 
 <!--
@@ -347,7 +347,7 @@ var layout1 = {barmode: "stack",
                   }}
 };
 
-Plotly.newPlot("myDiv", data1, layout1, {showSendToCloud: true});
+//Plotly.newPlot("myDiv", data1, layout1, {showSendToCloud: true});
 
 var glob_day;
 //console.log(location.search.substring(1));
@@ -396,10 +396,12 @@ window.onclick = function(event) {
   }
 }
 
+// arrays for circles plotted
 var circles = [];
 var mapFeatures = [];
 var vehicleLocationArray;
 
+// arrays that could be utilized for filtering by day in the future
 var sunday = [];
 var monday = [];
 var tuesday = [];
@@ -415,6 +417,7 @@ var evening = [];
 var night = [];
 var dawn = [];
 
+// Function which determines if an object is empty
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -423,17 +426,20 @@ function isEmpty(obj) {
     return true;
 }
 
+// Processes the text data, and loads it into the Leaflet.js bubble map on the webpage
 function processData(allText) {
     // For the regular heatmap data
     var lines=[];
     var allTextLines = allText.split(/\r\n|\n/);
     var headers = allTextLines[0].split(',');
 
+    // Array detailing (emergency) vehicle locations
     vehicleLocationArray = new Array;
     for (var i=1; i<allTextLines.length; i++) {
       var temp_obj = {};
       var data = allTextLines[i].split(',');
       if (data.length == headers.length) {
+        // For each header category, read it in and set the corresponding object field to that value
         for (var j=0; j<headers.length; j++) {
            if (headers[j] == 'CenterLatitude')
                temp_obj.lat = parseFloat(data[j]);
@@ -441,6 +447,7 @@ function processData(allText) {
                temp_obj.lng = parseFloat(data[j]);
            if (headers[j] == 'Average Speeds(mph)') {
                temp_obj.spd = parseFloat(data[j]);
+               // Assining colors
                if(temp_obj.spd<=5) {
                  temp_obj.rad = 150;
                  temp_obj.color = "#800026";
@@ -468,9 +475,10 @@ function processData(allText) {
                else if(temp_obj.spd > 25) {
                  temp_obj.rad = 150;
                  //temp_obj.color = "#FEB24C";
-                 temp_obj.color = "#D3D3D3";
+                 temp_obj.color = "#808080";
                }
             }
+
            if (headers[j] == 'time'){
                var timestamp = new Date(data[j]);
                console.log(timestamp);
@@ -480,6 +488,7 @@ function processData(allText) {
            }
        }
      }
+     // Ensure all object conditions are valid before pushing to vehicleLocationArray
      if (!isEmpty(temp_obj) && (temp_obj.day == glob_day || glob_day < 0)) {
        vehicleLocationArray.push(temp_obj);
      }
@@ -494,6 +503,7 @@ function processData(allText) {
 	  data: lines
 	};
 
+  // Getting map layer and attributes from the sources/links/listed below
   var oldMapURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     oldMapAttr = '...';
   var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -501,8 +511,10 @@ function processData(allText) {
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 		mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
 
+  // Base layer used in the map
 	var baseLayer   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr});
 
+  // Old base layer
 	var baseLayer1 = L.tileLayer(
 	  mbUrl,{
       id: 'mapbox.light',
@@ -530,6 +542,7 @@ function processData(allText) {
 	  valueField: 'count'
 	};
 
+  // Layer for old heatmap (not used)
 	var heatmapLayer = new HeatmapOverlay(cfg);
 
 	var mymap = L.map('mapid', {
@@ -574,7 +587,7 @@ function processData(allText) {
 
     mapFeatures.push(feature);
 
-
+    // code that could be used for filtering by day
       if (obj.day == 0) {
         //console.log("Sunday");
         sunday.push(circle);
@@ -604,7 +617,7 @@ function processData(allText) {
         saturday.push(circle);
       }
 
-
+      // code that could be used for filtering by time of day
         if (obj.hour >= 3 && obj.hour < 7) {
           //console.log("Dawn");
           dawn.push(circle);
@@ -710,7 +723,7 @@ info.addTo(mymap);
 
   // add interaction
   function getColor(speed) {
-      return speed > 25  ? '#D3D3D3' :
+      return speed > 25  ? '#808080' :
              speed > 20  ? '#1A8508'  :
              speed > 15  ?  '#99D923' :
              speed > 10   ? '#FFFB00' :
@@ -782,9 +795,10 @@ info.addTo(mymap);
   	}).addTo(mymap);
 
   // new heatmap code 6/19/2019
-
+  // Placement of map legend
   var legend = L.control({position: 'bottomright'});
 
+  // Add details/categories to legend
   legend.onAdd = function (mymap) {
 
       var div = L.DomUtil.create('div', 'info legend'),
@@ -802,10 +816,11 @@ info.addTo(mymap);
       return div;
   };
 
-  legend.addTo(mymap);
+  legend.addTo(mymap); // Add legend
 
 };
 
+// Placeholder code for if function were to be added to further filter points by day/time
 $('#selector').change(function() {
 		console.log($(this).val());
     var day = $(this).val();
@@ -836,11 +851,12 @@ $('#selector').change(function() {
     }
 });
 
+// AJAX call for reading in the csv data file
 $(document).ready(function() {
     $.ajax({
         type: "GET",
         //url: "samplecircle.csv",
-        url: "filtered_avg_data2.csv",
+        url: "IntersectionAverages.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {

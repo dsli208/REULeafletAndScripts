@@ -20,7 +20,7 @@
 <head>
 
 <title>Test Map 2</title>
-
+<!-- Add Leaflet.js heat map sources -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
 	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 crossorigin=""/>
@@ -39,6 +39,8 @@ crossorigin=""/>
 <!-- include cartodb.js library -->
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
+<!-- Load d3.js/plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <style>
 
 #loader {
@@ -219,6 +221,11 @@ html, body,
 -->
 <br />
 <div id="mapid"></div>
+
+<!-- Create a div where the graph will take place -->
+<!--<p> Histogram for Intersection X </p><br /> -->
+<div id="myDiv"></div>
+
 <!--
 <div id='selector_menu'>
 		<select id='selector'>
@@ -237,7 +244,7 @@ html, body,
 
 <script>
 
-var x1 = [];
+/*var x1 = [];
 var x2 = [];
 var x3 = [];
 var x4 = [];
@@ -323,10 +330,11 @@ var layout1 = {barmode: "stack",
                       color: '#7f7f7f'
                     }
                   }}
-};
+};*/
 
-Plotly.newPlot("myDiv", data1, layout1, {showSendToCloud: true});
+//Plotly.newPlot("myDiv", data1, layout1, {showSendToCloud: true});
 
+// Code that could be used for filtering by day
 var glob_day;
 console.log(location.search.substring(1));
 if (location.search.substring(1) == 'day=0') {
@@ -374,10 +382,12 @@ window.onclick = function(event) {
   }
 }
 
+// Array for circle objects to be displayed on map
 var circles = [];
 var mapFeatures = [];
 var vehicleLocationArray;
 
+// Arrays for potentially filtering by day...
 var sunday = [];
 var monday = [];
 var tuesday = [];
@@ -385,7 +395,7 @@ var wednesday = [];
 var thursday = [];
 var friday = [];
 var saturday = [];
-
+// .. as well as time of day too
 var morning = [];
 var midday = [];
 var afternoon = [];
@@ -393,6 +403,7 @@ var evening = [];
 var night = [];
 var dawn = [];
 
+// Is an array object empty
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -401,17 +412,20 @@ function isEmpty(obj) {
     return true;
 }
 
+// Like speed map (index.php), this function reads in data and adds it to the Leaflet bubble map
 function processData(allText) {
     // For the regular heatmap data
     var lines=[];
     var allTextLines = allText.split(/\r\n|\n/);
     var headers = allTextLines[0].split(',');
 
+    // Array with objects detailing (emergency) vehicle locations
     vehicleLocationArray = new Array;
     for (var i=1; i<allTextLines.length; i++) {
       var temp_obj = {};
       var data = allTextLines[i].split(',');
       if (data.length == headers.length) {
+        // Identifying category by header, then setting object value to correspond with associated data
         for (var j=0; j<headers.length; j++) {
            if (headers[j] == 'CenterLatitude')
                temp_obj.lat = parseFloat(data[j]);
@@ -421,7 +435,7 @@ function processData(allText) {
                temp_obj.delay = parseFloat(data[j]);
                if(temp_obj.delay <= 10 || temp_obj.delay == null) {
                  temp_obj.rad = 150;
-                 temp_obj.color = "#D3D3D3";
+                 temp_obj.color = "#808080";
 
                }
                else if(temp_obj.delay <= 20) {
@@ -457,6 +471,7 @@ function processData(allText) {
            }
        }
      }
+     // Ensure object isn't empty and is valid before adding it to vehicle locations
      if (!isEmpty(temp_obj) && (temp_obj.day == glob_day || glob_day < 0)) {
        vehicleLocationArray.push(temp_obj);
      }
@@ -471,6 +486,7 @@ function processData(allText) {
 	  data: lines
 	};
 
+  // Getting map sources and attributes
   var oldMapURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     oldMapAttr = '...';
   var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -478,6 +494,7 @@ function processData(allText) {
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 		mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
 
+  // Base layer of map
 	var baseLayer   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr});
 
 	var baseLayer1 = L.tileLayer(
@@ -488,6 +505,7 @@ function processData(allText) {
 	  }
 	);
 
+  // Basework for heat map layer
 	var cfg = {
 	  // radius should be small ONLY if scaleRadius is true (or small radius is intended)
 	  // if scaleRadius is false it will be the constant radius used in pixels
@@ -509,6 +527,7 @@ function processData(allText) {
 
 	var heatmapLayer = new HeatmapOverlay(cfg);
 
+  // Configure Leaflet map
 	var mymap = L.map('mapid', {
 		center: [33.965759, -84.096407],
 		zoom: 12,
@@ -522,6 +541,7 @@ function processData(allText) {
 			accessToken: 'pk.eyJ1IjoiYWxhdTMzIiwiYSI6ImNqd2phYTZ4ODAzbnk0YW9lYWdzOTlpZGEifQ.4hhK6mhqi2brriiB7bEyuw'
 	}).addTo(mymap);*/
 
+  // Adding each of the locations onto the map
   for (var i = 0; i < vehicleLocationArray.length; i++) {
     var obj = vehicleLocationArray[i];
     console.log(obj);
@@ -550,7 +570,7 @@ function processData(allText) {
 
     mapFeatures.push(feature);
 
-
+    // Future code for potentially filtering by day
       if (obj.day == 0) {
         console.log("Sunday");
         sunday.push(circle);
@@ -607,7 +627,7 @@ function processData(allText) {
         }
   }
 
-
+  // Add functionality for each point in the map (mouseover and click)
   console.log(circles);
   circles.forEach(function(obj) {
         var index = circles.indexOf(obj);
@@ -691,7 +711,7 @@ info.addTo(mymap);
            d > 30  ?  '#FFFB00' :
            d > 20   ? '#99D923' :
            d > 10   ? '#1A8508' :
-           d > 0   ?  '#D3D3D3' :
+           d > 0   ?  '#808080' :
                       '#FFEDA0';
   }
 
@@ -759,6 +779,7 @@ info.addTo(mymap);
 
   // new heatmap code 6/19/2019
 
+  // Code for map legend, see index.php for more details
   var legend = L.control({position: 'bottomright'});
 
   legend.onAdd = function (mymap) {
@@ -782,6 +803,7 @@ info.addTo(mymap);
 
 };
 
+// Placeholder code for selector, could be used to filter by day
 $('#selector').change(function() {
 		console.log($(this).val());
     var day = $(this).val();
@@ -812,11 +834,12 @@ $('#selector').change(function() {
     }
 });
 
+// AJAX code for reading in data file
 $(document).ready(function() {
     $.ajax({
         type: "GET",
         //url: "samplecircle.csv",
-        url: "filtered_avg_data2.csv",
+        url: "IntersectionAverages.csv",
         //url: "final.csv",
         dataType: "text",
         success: function(data) {processData(data);}
