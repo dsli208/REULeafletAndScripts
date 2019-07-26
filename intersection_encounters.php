@@ -229,10 +229,12 @@ html, body,
 <p> Histogram for Intersection X </p><br />
 <div id="myDiv1"></div>
 
+<!-- Datepicker -->
 <p>Date: <input type="text" id="datepicker"></p>
 
 <div id="myDiv2"></div>
 
+<!-- Selector menu -->
 <div id='selector_menu'>
 		<select id='selector'>
 			<option value='none' href='/'>Select Intersection By ID</option>
@@ -281,6 +283,7 @@ $( function() {
     console.log(currentDate);
   } );
 
+// Code for remembering day ... maybe convert to using JWT or some cookie technology instead of modifying the query string?
 var glob_int;
 
 var glob_month;
@@ -321,8 +324,7 @@ var d5 = [];
 var d6 = [];
 var d7 = [];
 
-
-
+// Random placeholder code
 for (var i = 0; i < 500; i++) {
     d1.push(Math.floor(Math.random() * 7));
     d2.push(Math.floor(Math.random() * 7));
@@ -333,6 +335,7 @@ for (var i = 0; i < 500; i++) {
     d7.push(Math.floor(Math.random() * 7));
 }
 
+// Read in all data from the traffic file
 function processTrafficData(trafficText) {
   var lines=[];
   var allTextLines = allText.split(/\r\n|\n/);
@@ -341,7 +344,7 @@ function processTrafficData(trafficText) {
   for (var i = 1; i < allTextLines.length; i++) {
     var data = allTextLines[i].split(',');
     var temp_obj = {};
-
+    // Match data up with the appropriate headers
     if (data.length == headers.length) {
       for (var j = 0; j < headers.length; j++) {
         if (headers[j] == 'id') { // might need to adjust header strings
@@ -359,7 +362,7 @@ function processTrafficData(trafficText) {
         var day = temp_obj.date.getDay();
         var week = temp_obj.date.getWeek();
 
-        
+
       }
 
       // Now sort by INTERSECTION
